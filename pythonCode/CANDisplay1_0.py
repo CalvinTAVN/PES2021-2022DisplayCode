@@ -17,7 +17,7 @@ can0 = can.interface.Bus(channel='can0', bustype='socketcan')
 display = Tk()
 display.title = ('PES Speedboat')
 display.geometry('1024x600')
-ws.config(bg = 'gray')
+display.config(bg = 'gray')
 
 avgV_lbl = Label(
     display,
