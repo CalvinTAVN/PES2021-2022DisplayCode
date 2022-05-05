@@ -22,7 +22,8 @@ with open('dataInfo/' + dt_string, 'w') as f:
     f.write("NewText File\n")
     f.write("Time  |  1700  |  1713\n")
 for x in range(10):
-    currentTime = datetime.now.strftime("%M : %S")
+    currentTime = datetime.now();
+    currentTimeString = currentTime.strftime("%M : %S")
     msg = can0.recv(3.0)
     dataArray = msg.data
     print(msg)
@@ -33,7 +34,7 @@ for x in range(10):
     if(msg.arbitration_id == 1714):
         value3 = dataArray[0]
 
-    f.write(currentTime + "|" + str(value1) + " | " + str(value2) + "\n")
+    f.write(currentTimeString + "|" + str(value1) + " | " + str(value2) + "\n")
 
 
 os.system("sudo ifconfig can0 down")
