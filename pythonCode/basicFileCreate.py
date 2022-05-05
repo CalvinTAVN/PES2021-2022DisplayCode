@@ -14,7 +14,7 @@ can0 = can.interface.Bus(channel='can0', bustype='socketcan')
 
 #Initial Values for Files
 value1 = 0;
-value1 = 0;
+value2 = 0;
 value3 = 0;
 
 # Creation of New File
