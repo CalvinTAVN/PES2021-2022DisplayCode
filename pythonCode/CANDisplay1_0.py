@@ -35,7 +35,7 @@ def on_closing():
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
         root.destroy()
         runner = False
-        
+
 #######################################################
 
 #Initial Values for Files
@@ -51,23 +51,28 @@ newFile.write("Time   |  1700  |  1713   |   1714\n")
 
 runner = True;
 while runner:
-    currentTime = datetime.now();
-    currentTimeString = currentTime.strftime("%M : %S")
-    msg = can0.recv(3.0)
-    dataArray = msg.data
-    print(msg)
-    if (msg.arbitration_id == 1700):
-        value1 = dataArray[6]
-        avgV_lbl.config(text=str(value1))
-    if (msg.arbitration_id == 1713):
-        value2 = dataArray[4]
-        avgV_lbl.config(text=str(value2))
-    if(msg.arbitration_id == 1714):
-        value3 = dataArray[0]
-        avgV_lbl.config(text=str(value3))
-    newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
-    if runner:
+    try:
+        currentTime = datetime.now();
+        currentTimeString = currentTime.strftime("%M : %S")
+        msg = can0.recv(3.0)
+        dataArray = msg.data
+        print(msg)
+        if (msg.arbitration_id == 1700):
+            value1 = dataArray[6]
+            avgV_lbl.config(text=str(value1))
+        if (msg.arbitration_id == 1713):
+            value2 = dataArray[4]
+            avgV_lbl.config(text=str(value2))
+        if(msg.arbitration_id == 1714):
+            value3 = dataArray[0]
+            avgV_lbl.config(text=str(value3))
+        newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
         display.update()
+        break
+    except tkinter.TclError:
+        newFile.write("End")
+
+
 
 
 newFile.close();
