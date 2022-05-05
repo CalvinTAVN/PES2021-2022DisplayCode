@@ -79,5 +79,5 @@ newFile.close();
 os.system("sudo ifconfig can0 down")
 
 #Display Tkinter Protocols
-root.protocol("WM_DELETE_WINDOW", on_closing)
+display.protocol("WM_DELETE_WINDOW", on_closing)
 display.mainloop()
