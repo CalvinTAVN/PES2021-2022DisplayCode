@@ -12,6 +12,10 @@ os.system("sudo ip link set can0 type can bitrate 500000")
 os.system("sudo ifconfig can0 up")
 can0 = can.interface.Bus(channel='can0', bustype='socketcan')
 
+#Initial Values for Files
+value1 = 0;
+value1 = 0;
+value3 = 0;
 
 # Creation of New File
 print(dt_string)
@@ -34,7 +38,7 @@ for x in range(10):
     if(msg.arbitration_id == 1714):
         value3 = dataArray[0]
 
-    f.write(currentTimeString + "|" + str(value1) + " | " + str(value2) + "\n")
+    f.write(currentTimeString + "|" + str(value1) + " | " + str(value2) + + " | " + str(value3) + "\n")
 
 
 os.system("sudo ifconfig can0 down")
