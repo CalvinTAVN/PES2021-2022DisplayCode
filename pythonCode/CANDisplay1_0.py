@@ -69,7 +69,7 @@ while True:
         newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
         display.update()
         continue
-    except tkinter.TclError:
+    except TclError:
         newFile.write("End")
         break
 
