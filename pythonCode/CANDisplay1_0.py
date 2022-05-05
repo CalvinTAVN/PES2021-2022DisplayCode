@@ -42,7 +42,7 @@ print(dt_string)
 newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
-while True:
+for x in range(5):
     currentTime = datetime.now();
     currentTimeString = currentTime.strftime("%M : %S")
     msg = can0.recv(3.0)
