@@ -33,7 +33,7 @@ display.update();
 
 def on_closing():
     #if messagebox.askokcancel("Quit", "Do you want to quit?"):
-    display.destroy()
+    root.destroy()
     runner = False
 
 #######################################################
@@ -50,7 +50,7 @@ newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
 
 runner = True;
-while runner:
+while True:
     try:
         currentTime = datetime.now();
         currentTimeString = currentTime.strftime("%M : %S")
@@ -71,7 +71,7 @@ while runner:
         continue
     except tkinter.TclError:
         newFile.write("End")
-
+        break
 
 
 
