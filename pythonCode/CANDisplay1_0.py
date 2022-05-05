@@ -50,7 +50,7 @@ newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
 
 runner = True;
-while True:
+while runner:
     try:
         currentTime = datetime.now();
         currentTimeString = currentTime.strftime("%M : %S")
