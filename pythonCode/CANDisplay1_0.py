@@ -32,7 +32,7 @@ avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, r
 display.update();
 
 def on_closing():
-    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+    #if messagebox.askokcancel("Quit", "Do you want to quit?"):
         root.destroy()
         runner = False
 
