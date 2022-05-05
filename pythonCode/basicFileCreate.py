@@ -38,7 +38,7 @@ for x in range(10):
     if(msg.arbitration_id == 1714):
         value3 = dataArray[0]
 
-    f.write(currentTimeString + "|" + str(value1) + " | " + str(value2) + + " | " + str(value3) + "\n")
+    f.write(currentTimeString + "|" + str(value1) + " | " + str(value2) +  " | " + str(value3) + "\n")
 
 
 os.system("sudo ifconfig can0 down")
