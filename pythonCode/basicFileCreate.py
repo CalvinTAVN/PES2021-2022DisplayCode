@@ -21,7 +21,7 @@ value3 = 0;
 print(dt_string)
 newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
-newFile.write("Time  |  1700  |  1713\n")
+newFile.write("Time   |  1700  |  1713   |   1714\n")
 for x in range(10):
     currentTime = datetime.now();
     currentTimeString = currentTime.strftime("%M : %S")
@@ -34,7 +34,7 @@ for x in range(10):
         value2 = dataArray[4]
     if(msg.arbitration_id == 1714):
         value3 = dataArray[0]
-    newFile.write(currentTimeString + "|" + str(value1) + " | " + str(value2) +  " | " + str(value3) + "\n")
+    newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
 
 newFile.close();
 
