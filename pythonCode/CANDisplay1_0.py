@@ -30,6 +30,10 @@ avgV_lbl = Label(
 )
 avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
 display.update();
+
+def on_closing():
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        root.destroy()
 #######################################################
 
 #Initial Values for Files
@@ -42,7 +46,7 @@ print(dt_string)
 newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
-for x in range(5):
+while True:
     currentTime = datetime.now();
     currentTimeString = currentTime.strftime("%M : %S")
     msg = can0.recv(3.0)
@@ -59,7 +63,11 @@ for x in range(5):
         avgV_lbl.config(text=str(value3))
     newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
     display.update()
-    
+
+
 newFile.close();
 os.system("sudo ifconfig can0 down")
+
+#Display Tkinter Protocols
+root.protocol("WM_DELETE_WINDOW", on_closing)
 display.mainloop()
