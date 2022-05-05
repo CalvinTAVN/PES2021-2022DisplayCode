@@ -33,7 +33,7 @@ display.update();
 
 def on_closing():
     #if messagebox.askokcancel("Quit", "Do you want to quit?"):
-    root.destroy()
+    display.destroy()
     runner = False
 
 #######################################################
@@ -68,7 +68,7 @@ while runner:
             avgV_lbl.config(text=str(value3))
         newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
         display.update()
-        break
+        continue
     except tkinter.TclError:
         newFile.write("End")
 
