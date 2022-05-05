@@ -34,6 +34,8 @@ display.update();
 def on_closing():
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
         root.destroy()
+        runner = False
+        
 #######################################################
 
 #Initial Values for Files
@@ -46,7 +48,9 @@ print(dt_string)
 newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
-while True:
+
+runner = True;
+while runner:
     currentTime = datetime.now();
     currentTimeString = currentTime.strftime("%M : %S")
     msg = can0.recv(3.0)
@@ -62,7 +66,8 @@ while True:
         value3 = dataArray[0]
         avgV_lbl.config(text=str(value3))
     newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
-    display.update()
+    if runner:
+        display.update()
 
 
 newFile.close();
