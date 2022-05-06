@@ -31,7 +31,7 @@ def Shutdown(channel):
 
 # Add our function to execute when the button pressed event happens
 
-GPIO.add_event_detect(21, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
+GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
 # Now wait!
 
