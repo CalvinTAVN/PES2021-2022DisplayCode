@@ -12,7 +12,7 @@ GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def Shutdown(channel):
     print("Shutting Down")
-    global runner 
+    global runner
     runner = False;
     # CAN ending protocol
     #newFile.close();
@@ -55,7 +55,6 @@ display.update();
 
 def on_closing():
     #if messagebox.askokcancel("Quit", "Do you want to quit?"):
-    display.destroy()
     runner = False
 
 #######################################################
@@ -95,7 +94,8 @@ while runner:
         newFile.write("End")
         break
 
-
+#Tkinter off
+display.destroy()
 
 #CAN ending protocol
 newFile.close();
