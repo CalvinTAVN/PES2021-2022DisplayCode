@@ -1,8 +1,8 @@
 import serial
 
-port = "/dev/serial1"
+port = "/dev/serial0"
 
-"""
+
 def parseGPS(data):
     #    print "raw:", data #prints raw data
     if data[0:6] == "$GPRMC":
@@ -35,11 +35,11 @@ def decode(coord):
     min = head[-2:]
     return deg + " deg " + min + "." + tail + " min"
 
-"""
+
 print("Receiving GPS data")
 
 ser = serial.Serial(port, baudrate=9600, timeout=0.5)
 while True:
     data = ser.readline()
-    #parseGPS(data)
+    parseGPS(data)
     print(data)
