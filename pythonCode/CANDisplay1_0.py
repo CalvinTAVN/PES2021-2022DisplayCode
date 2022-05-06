@@ -11,15 +11,16 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def Shutdown(channel):
-    print("Shutting Down")
-    runner = False;
+    on_closing()
+    #print("Shutting Down")
+    #runner = False;
     # CAN ending protocol
-    newFile.close();
-    os.system("sudo ifconfig can0 down")
+    #newFile.close();
+    #os.system("sudo ifconfig can0 down")
     # Turning off Raspberry Pi
-    time.sleep(2)
-    print("Would of shutdown")
-    os.system("sudo shutdown -h now")
+    #time.sleep(2)
+    #print("Would of shutdown")
+    #os.system("sudo shutdown -h now")
 
 GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
@@ -69,7 +70,7 @@ newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
 
-runner = False;
+runner = True;
 while runner:
     try:
         currentTime = datetime.now();
