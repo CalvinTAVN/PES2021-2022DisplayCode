@@ -55,14 +55,15 @@ def on_closing():
 
 #Initial Values for Files
 #note, use the semicolon to separate parameters
-value1 = 0; value2 = 0; value3 = 0
+lowTemp = 0; highTemp = 0; avgTemp = 0
+packCurrent = 0; packVoltage = 0; lowCellVoltage = 0; highCellVoltage = 0; avgCellVoltage = 0;
 
 # Creation of New File #note screen size is 1024x600
 print(dt_string)
 newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
-newFile.write("Time   |  1700  |  1713   |   1714\n")
-
+newFile.write("Time   |  lowTemp  | highTemp | avgTemp | packCurrent " +
+              "packVoltage | lowCellVoltage | highCellVoltage | avgCellVoltage\n")
 runner = True
 while runner:
     try:
@@ -72,16 +73,22 @@ while runner:
         dataArray = msg.data
         #print(msg)
         #print(runner)
-        if (msg.arbitration_id == 1700):
-            value1 = dataArray[6]
-            avgV_lbl.config(text=str(value1))
-        if (msg.arbitration_id == 1713):
-            value2 = dataArray[4]
-            avgV_lbl.config(text=str(value2))
-        if(msg.arbitration_id == 1714):
-            value3 = dataArray[0]
-            avgV_lbl.config(text=str(value3))
-        newFile.write(currentTimeString + "|   " + str(value1) + "    | " + str(value2) +  "    |    " + str(value3) + "\n")
+        if (msg.arbitration_id == 1701):
+            avgTemp = dataArray[0]
+            lowTemp = dataArray[1]
+            highTemp = dataArray[2]
+            #avgV_lbl.config(text=str(value2)) Make Label for this
+        if(msg.arbitration_id == 1702):
+            packCurrent = dataArray[0]
+            packVoltage = dataArray[1]
+            lowCellVoltage = dataArray[3]
+            highCellVoltage = dataArray[4]
+            avgCellVoltage = dataArray[5]
+            #avgV_lbl.config(text=str(value3)) Make Label for this as well
+        newFile.write(currentTimeString + "| " + str(lowTemp) + " | " + str(highTemp) +  " | " + str(avgTemp) + 
+                      " | " + str(packCurrent) + " | " + str(packVoltage) + " | " + str(lowCellVoltage) + 
+                      " | " + str(highTemp) + " | " + str(avgCellVoltage) + "\n")
+
         display.update()
         continue
     except TclError:
