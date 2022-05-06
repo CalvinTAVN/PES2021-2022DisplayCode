@@ -44,7 +44,7 @@ lowTempLabel = Label(
 
 ).grid(row = 0, column =0)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-lowTempLabel.pack()
+#lowTempLabel.pack()
 
 lowTempMeasure = Label(
     display,
@@ -55,7 +55,7 @@ lowTempMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =0)
-lowTempMeasure.pack()
+#lowTempMeasure.pack()
 
 highTempLabel = Label(
     display,
@@ -67,7 +67,7 @@ highTempLabel = Label(
 
 ).grid(row = 0, column =1)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-highTempLabel.pack()
+#highTempLabel.pack()
 
 highTempMeasure = Label(
     display,
@@ -78,7 +78,7 @@ highTempMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =1)
-highTempMeasure.pack()
+#highTempMeasure.pack()
 
 avgTempLabel = Label(
     display,
@@ -90,7 +90,7 @@ avgTempLabel = Label(
 
 ).grid(row = 0, column =2)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-avgTempLabel.pack()
+#avgTempLabel.pack()
 
 avgTempMeasure = Label(
     display,
@@ -101,7 +101,7 @@ avgTempMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =2)
-avgTempMeasure.pack()
+#avgTempMeasure.pack()
 
 packCurrentLabel = Label(
     display,
@@ -113,7 +113,7 @@ packCurrentLabel = Label(
 
 ).grid(row = 0, column =3)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-packCurrentLabel.pack()
+#packCurrentLabel.pack()
 
 packCurrentMeasure = Label(
     display,
@@ -124,7 +124,7 @@ packCurrentMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =3)
-packCurrentMeasure.pack()
+#packCurrentMeasure.pack()
 
 packVoltageLabel = Label(
     display,
@@ -136,7 +136,7 @@ packVoltageLabel = Label(
 
 ).grid(row = 0, column =4)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-packVoltageLabel.pack()
+#packVoltageLabel.pack()
 
 packVoltageMeasure = Label(
     display,
@@ -147,7 +147,7 @@ packVoltageMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =4)
-packVoltageMeasure.pack()
+#packVoltageMeasure.pack()
 
 
 lowCellVoltageLabel = Label(
@@ -160,7 +160,7 @@ lowCellVoltageLabel = Label(
 
 ).grid(row = 0, column =5)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-lowCellVoltageLabel.pack()
+#lowCellVoltageLabel.pack()
 
 lowCellVoltageMeasure = Label(
     display,
@@ -171,7 +171,7 @@ lowCellVoltageMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =5)
-lowCellVoltageMeasure.pack()
+#lowCellVoltageMeasure.pack()
 
 highCellVoltageLabel = Label(
     display,
@@ -183,7 +183,7 @@ highCellVoltageLabel = Label(
 
 ).grid(row = 0, column =6)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-highCellVoltageLabel.pack()
+#highCellVoltageLabel.pack()
 
 highCellVoltageMeasure = Label(
     display,
@@ -194,7 +194,7 @@ highCellVoltageMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =6)
-highCellVoltageMeasure.pack()
+#highCellVoltageMeasure.pack()
 
 avgCellVoltageLabel = Label(
     display,
@@ -206,7 +206,7 @@ avgCellVoltageLabel = Label(
 
 ).grid(row = 0, column =7)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
-avgCellVoltageLabel.pack()
+#avgCellVoltageLabel.pack()
 
 avgCellVoltageMeasure = Label(
     display,
@@ -217,7 +217,7 @@ avgCellVoltageMeasure = Label(
     bg = 'white'
 
 ).grid(row = 1, column =7)
-avgCellVoltageMeasure.pack()
+#avgCellVoltageMeasure.pack()
 
 
 
