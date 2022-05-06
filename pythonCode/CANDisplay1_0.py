@@ -56,7 +56,7 @@ display.update();
 def on_closing():
     #if messagebox.askokcancel("Quit", "Do you want to quit?"):
     runner = False
-    root.destroy()
+    display.destroy()
 
 #######################################################
 
@@ -96,7 +96,7 @@ while runner:
         break
 
 #Tkinter off
-root.destroy()
+display.destroy()
 
 #CAN ending protocol
 newFile.close();
