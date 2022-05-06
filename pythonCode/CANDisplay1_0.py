@@ -2,7 +2,7 @@ import os
 import can
 from datetime import datetime
 from tkinter import *
-import Rpi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 #ShutDown Button Setup
 GPIO.setmode(GPIO.BCM)
