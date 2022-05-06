@@ -2,6 +2,19 @@ import os
 import can
 from datetime import datetime
 from tkinter import *
+import Rpi.GPIO as GPIO
+
+#ShutDown Button Setup
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+def Shutdown(channel):
+    print("Shutting Down")
+    runner = False;
+    #os.system("sudo shutdown -h now")
+
+GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
+
 
 #Time Module
 now = datetime.now()
@@ -39,9 +52,8 @@ def on_closing():
 #######################################################
 
 #Initial Values for Files
-value1 = 0;
-value2 = 0;
-value3 = 0;
+#note, use the semicolon to separate parameters
+value1 = 0; value2 = 0; value3 = 0
 
 # Creation of New File #note screen size is 1024x600
 print(dt_string)
@@ -73,10 +85,13 @@ while runner:
         newFile.write("End")
         break
 
-
-
+#CAN ending protocol
 newFile.close();
 os.system("sudo ifconfig can0 down")
+
+#Turning off Raspberry Pi
+time.sleep(2)
+os.system("sudo shutdown -h now")
 
 #Display Tkinter Protocols
 display.protocol("WM_DELETE_WINDOW", on_closing)
