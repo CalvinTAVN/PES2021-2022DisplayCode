@@ -62,7 +62,7 @@ packCurrent = 0; packVoltage = 0; lowCellVoltage = 0; highCellVoltage = 0; avgCe
 print(dt_string)
 newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
-newFile.write("Time   |lowTemp|highTemp|avgTemp|packCurrent" +
+newFile.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
               "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
 runner = True
 while runner:
