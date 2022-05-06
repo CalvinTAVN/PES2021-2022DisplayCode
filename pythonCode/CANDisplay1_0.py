@@ -5,7 +5,7 @@ import can
 from datetime import datetime
 from tkinter import *
 
-
+runner = True;
 #ShutDown Button Setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -21,6 +21,7 @@ def Shutdown(channel):
     #print("Would of shutdown")
     # os.system("sudo shutdown -h now")
 
+GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
 
 #Time Module
@@ -68,8 +69,7 @@ newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
 
-runner = True;
-GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
+#runner = True;
 while runner:
     try:
         currentTime = datetime.now();
