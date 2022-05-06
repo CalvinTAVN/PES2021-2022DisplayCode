@@ -62,8 +62,8 @@ packCurrent = 0; packVoltage = 0; lowCellVoltage = 0; highCellVoltage = 0; avgCe
 print(dt_string)
 newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
-newFile.write("Time   |  lowTemp  | highTemp | avgTemp | packCurrent " +
-              "packVoltage | lowCellVoltage | highCellVoltage | avgCellVoltage\n")
+newFile.write("Time   |lowTemp|highTemp|avgTemp|packCurrent" +
+              "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
 runner = True
 while runner:
     try:
@@ -85,9 +85,9 @@ while runner:
             highCellVoltage = dataArray[4]
             avgCellVoltage = dataArray[5]
             #avgV_lbl.config(text=str(value3)) Make Label for this as well
-        newFile.write(currentTimeString + "| " + str(lowTemp) + " | " + str(highTemp) +  " | " + str(avgTemp) + 
-                      " | " + str(packCurrent) + " | " + str(packVoltage) + " | " + str(lowCellVoltage) + 
-                      " | " + str(highTemp) + " | " + str(avgCellVoltage) + "\n")
+        newFile.write(currentTimeString + "|  " + str(lowTemp) + "   |   " + str(highTemp) +  "   |  " + str(avgTemp) +
+                      "   |    " + str(packCurrent) + "     |    " + str(packVoltage) + "     |      " + str(lowCellVoltage) +
+                      "      |   " + str(highTemp) + "   |      " + str(avgCellVoltage) + "\n")
 
         display.update()
         continue
