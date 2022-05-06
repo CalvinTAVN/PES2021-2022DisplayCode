@@ -69,7 +69,7 @@ newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
 
-runner = True;
+runner = False;
 while runner:
     try:
         currentTime = datetime.now();
