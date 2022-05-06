@@ -86,8 +86,8 @@ while runner:
             avgCellVoltage = dataArray[5]
             #avgV_lbl.config(text=str(value3)) Make Label for this as well
         newFile.write(currentTimeString + "|  " + str(lowTemp) + "   |   " + str(highTemp) +  "   |  " + str(avgTemp) +
-                      "   |    " + str(packCurrent) + "     |    " + str(packVoltage) + "     |      " + str(lowCellVoltage) +
-                      "      |   " + str(highTemp) + "   |      " + str(avgCellVoltage) + "\n")
+                      "   |     " + str(packCurrent) + "     |      " + str(packVoltage) + "     |      " + str(lowCellVoltage) +
+                      "      |      " + str(highCellVoltage) +       " |      " + str(avgCellVoltage) + "\n")
 
         display.update()
         continue
