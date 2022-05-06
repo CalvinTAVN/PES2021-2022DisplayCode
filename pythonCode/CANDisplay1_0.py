@@ -69,6 +69,7 @@ newFile.write("NewText File\n")
 newFile.write("Time   |  1700  |  1713   |   1714\n")
 
 runner = True;
+GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 while runner:
     try:
         currentTime = datetime.now();
@@ -92,7 +93,6 @@ while runner:
         newFile.write("End")
         break
 
-GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
 
 #CAN ending protocol
