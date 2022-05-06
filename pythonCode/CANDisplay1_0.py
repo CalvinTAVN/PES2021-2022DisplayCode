@@ -77,6 +77,7 @@ while runner:
         msg = can0.recv(3.0)
         dataArray = msg.data
         #print(msg)
+        print(runner)
         if (msg.arbitration_id == 1700):
             value1 = dataArray[6]
             avgV_lbl.config(text=str(value1))
