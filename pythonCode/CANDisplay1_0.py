@@ -10,7 +10,18 @@ from tkinter import *
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-###
+def Shutdown(channel):
+    print("Shutting Down")
+    runner = False;
+    # CAN ending protocol
+    #newFile.close();
+    #os.system("sudo ifconfig can0 down")
+    # Turning off Raspberry Pi
+    time.sleep(10)
+    print("Would of shutdown")
+    #os.system("sudo shutdown -h now")
+
+GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
 
 #Time Module
@@ -83,18 +94,7 @@ while runner:
         newFile.write("End")
         break
 
-def Shutdown(channel):
-    print("Shutting Down")
-    runner = False;
-    # CAN ending protocol
-    #newFile.close();
-    #os.system("sudo ifconfig can0 down")
-    # Turning off Raspberry Pi
-    #time.sleep(2)
-    #print("Would of shutdown")
-    #os.system("sudo shutdown -h now")
 
-GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
 #CAN ending protocol
 newFile.close();
