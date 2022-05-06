@@ -1,9 +1,10 @@
+import RPi.GPIO as GPIO
+import time
 import os
 import can
 from datetime import datetime
 from tkinter import *
-import RPi.GPIO as GPIO
-import time
+
 
 #ShutDown Button Setup
 GPIO.setmode(GPIO.BCM)
@@ -13,8 +14,8 @@ def Shutdown(channel):
     print("Shutting Down")
     runner = False;
     #os.system("sudo shutdown -h now")
-#removed bouncetime=2000
-GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown)
+
+GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
 
 #Time Module
@@ -69,7 +70,7 @@ while runner:
         currentTimeString = currentTime.strftime("%M : %S")
         msg = can0.recv(3.0)
         dataArray = msg.data
-        #print(msg)
+        print(msg)
         if (msg.arbitration_id == 1700):
             value1 = dataArray[6]
             avgV_lbl.config(text=str(value1))
