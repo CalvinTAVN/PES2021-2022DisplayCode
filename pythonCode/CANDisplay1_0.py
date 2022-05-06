@@ -34,17 +34,195 @@ display.title = ('PES Speedboat')
 display.geometry('1024x600')
 display.config(bg = 'gray')
 
-avgV_lbl = Label(
+lowTempLabel = Label(
     display,
-    text = "0 for right now",
+    text = "lowTemp",
     font = (21),
     padx = 10,
     pady = 5,
     bg = 'white'
 
-)
-avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+).grid(row = 0, column =0)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+lowTempLabel.pack()
+
+lowTempMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =0)
+lowTempMeasure.pack()
+
+highTempLabel = Label(
+    display,
+    text = "highTempLabel",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 0, column =1)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+highTempLabel.pack()
+
+highTempMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =1)
+highTempMeasure.pack()
+
+avgTempLabel = Label(
+    display,
+    text = "avgTemp",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 0, column =2)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+avgTempLabel.pack()
+
+avgTempMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =2)
+avgTempMeasure.pack()
+
+packCurrentLabel = Label(
+    display,
+    text = "packCurrent",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 0, column =3)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+packCurrentLabel.pack()
+
+packCurrentMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =3)
+packCurrentMeasure.pack()
+
+packVoltageLabel = Label(
+    display,
+    text = "packVoltage",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 0, column =4)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+packVoltageLabel.pack()
+
+packVoltageMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =4)
+packVoltageMeasure.pack()
+
+
+lowCellVoltageLabel = Label(
+    display,
+    text = "lowCellVoltage",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 0, column =5)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+lowCellVoltageLabel.pack()
+
+lowCellVoltageMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =5)
+lowCellVoltageMeasure.pack()
+
+highCellVoltageLabel = Label(
+    display,
+    text = "highCellVoltage",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 0, column =6)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+highCellVoltageLabel.pack()
+
+highCellVoltageMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =6)
+highCellVoltageMeasure.pack()
+
+avgCellVoltageLabel = Label(
+    display,
+    text = "avgCellVoltageLabel",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 0, column =7)
+#avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
+avgCellVoltageLabel.pack()
+
+avgCellVoltageMeasure = Label(
+    display,
+    text = "0 for now",
+    font = (21),
+    padx = 10,
+    pady = 5,
+    bg = 'white'
+
+).grid(row = 1, column =7)
+avgCellVoltageMeasure.pack()
+
+
+
 display.update();
+
 
 def on_closing():
     #if messagebox.askokcancel("Quit", "Do you want to quit?"):
@@ -77,6 +255,9 @@ while runner:
             avgTemp = dataArray[0]
             lowTemp = dataArray[1]
             highTemp = dataArray[2]
+            avgTempMeasure.config(text=str(avgTemp))
+            lowTempMeasure.config(text=str(lowTemp))
+            highTempMeasure.config(text=str(highTemp))
             #avgV_lbl.config(text=str(value2)) Make Label for this
         if(msg.arbitration_id == 1702):
             packCurrent = dataArray[0]
@@ -84,10 +265,14 @@ while runner:
             lowCellVoltage = dataArray[3]
             highCellVoltage = dataArray[4]
             avgCellVoltage = dataArray[5]
+            packVoltageMeasure.config(text = str(packVoltage))
+            lowCellVoltageMeasure.config(text=str([lowCellVoltage]))
+            highCellVoltageMeasure.config(text=str(highCellVoltage))
+            avgCellVoltageMeasure.config(text=str(avgCellVoltage))
             #avgV_lbl.config(text=str(value3)) Make Label for this as well
         newFile.write(currentTimeString + "|  " + str(lowTemp) + "   |   " + str(highTemp) +  "   |  " + str(avgTemp) +
                       "   |     " + str(packCurrent) + "     |      " + str(packVoltage) + "     |      " + str(lowCellVoltage) +
-                      "      |      " + str(highCellVoltage) +       " |      " + str(avgCellVoltage) + "\n")
+                      "      |      " + str(highCellVoltage) +       "         |      " + str(avgCellVoltage) + "\n")
 
         display.update()
         continue
@@ -105,7 +290,7 @@ os.system("sudo ifconfig can0 down")
 #Turning off Raspberry Pi
 time.sleep(3)
 #print("Would of shutdown")
-os.system("sudo shutdown -h now")
+#os.system("sudo shutdown -h now")
 
 #Display Tkinter Protocols
 display.protocol("WM_DELETE_WINDOW", on_closing)
