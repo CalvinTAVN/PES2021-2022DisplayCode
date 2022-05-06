@@ -14,11 +14,11 @@ def Shutdown(channel):
     print("Shutting Down")
     runner = False;
     # CAN ending protocol
-    newFile.close();
-    os.system("sudo ifconfig can0 down")
+    #newFile.close();
+    #os.system("sudo ifconfig can0 down")
     # Turning off Raspberry Pi
-    time.sleep(2)
-    print("Would of shutdown")
+    #time.sleep(2)
+    #print("Would of shutdown")
     # os.system("sudo shutdown -h now")
 
 GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
