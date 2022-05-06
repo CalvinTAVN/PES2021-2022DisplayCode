@@ -92,7 +92,7 @@ os.system("sudo ifconfig can0 down")
 
 #Turning off Raspberry Pi
 time.sleep(2)
-#os.system("sudo shutdown -h now")
+os.system("sudo shutdown -h now")
 
 #Display Tkinter Protocols
 display.protocol("WM_DELETE_WINDOW", on_closing)
