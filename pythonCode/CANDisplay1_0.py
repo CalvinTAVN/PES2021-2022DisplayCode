@@ -14,13 +14,6 @@ def Shutdown(channel):
     print("Shutting Down")
     global runner
     runner = False;
-    # CAN ending protocol
-    #newFile.close();
-    #os.system("sudo ifconfig can0 down")
-    # Turning off Raspberry Pi
-    #time.sleep(10)
-    #print("Would of shutdown")
-    #os.system("sudo shutdown -h now")
 
 GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
 
@@ -103,9 +96,9 @@ newFile.close();
 os.system("sudo ifconfig can0 down")
 
 #Turning off Raspberry Pi
-time.sleep(2)
-print("Would of shutdown")
-#os.system("sudo shutdown -h now")
+time.sleep(3)
+#print("Would of shutdown")
+os.system("sudo shutdown -h now")
 
 #Display Tkinter Protocols
 display.protocol("WM_DELETE_WINDOW", on_closing)
