@@ -69,7 +69,7 @@ while runner:
         currentTimeString = currentTime.strftime("%M : %S")
         msg = can0.recv(3.0)
         dataArray = msg.data
-        print(msg)
+        #print(msg)
         if (msg.arbitration_id == 1700):
             value1 = dataArray[6]
             avgV_lbl.config(text=str(value1))
