@@ -281,6 +281,7 @@ while runner:
             lowCellVoltage = dataArray[3]
             highCellVoltage = dataArray[4]
             avgCellVoltage = dataArray[5]
+            packCurrentMeasure.config(text = str(packCurrent))
             packVoltageMeasure.config(text = str(packVoltage))
             lowCellVoltageMeasure.config(text=str([lowCellVoltage]))
             highCellVoltageMeasure.config(text=str(highCellVoltage))
