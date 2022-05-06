@@ -26,3 +26,14 @@ def Shutdown(channel):
     time.sleep(5)
 
     os.system("sudo shutdown -h now")
+
+# Now wait!
+
+# Add our function to execute when the button pressed event happens
+
+GPIO.add_event_detect(21, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
+
+# Now wait!
+
+while 1:
+    time.sleep(1)
