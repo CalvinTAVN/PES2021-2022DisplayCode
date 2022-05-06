@@ -3,6 +3,7 @@ import can
 from datetime import datetime
 from tkinter import *
 import RPi.GPIO as GPIO
+import time
 
 #ShutDown Button Setup
 GPIO.setmode(GPIO.BCM)
@@ -12,8 +13,8 @@ def Shutdown(channel):
     print("Shutting Down")
     runner = False;
     #os.system("sudo shutdown -h now")
-
-GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown, bouncetime=2000)
+#removed bouncetime=2000
+GPIO.add_event_detect(4, GPIO.FALLING, callback=Shutdown)
 
 
 #Time Module
