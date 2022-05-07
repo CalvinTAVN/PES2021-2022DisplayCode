@@ -143,7 +143,7 @@ packCurrentMeasure.grid(row = 1, column =3)
 packVoltageLabel = Label(
     display,
     text = "packVoltage",
-    font = ('Verdana', 50),
+    font = ('Verdana', 30),
     padx = 10,
     pady = 5,
     bg = 'white'
@@ -156,7 +156,7 @@ packVoltageLabel.grid(row = 4, column =2)
 packVoltageMeasure = Label(
     display,
     text = "0 for now",
-    font = ('Verdana', 400),
+    font = ('Verdana', 200),
     padx = 10,
     pady = 5,
     bg = 'white'
