@@ -149,7 +149,7 @@ packVoltageLabel = Label(
     bg = 'white'
 
 )
-packVoltageLabel.grid(row = 4, column =1)
+packVoltageLabel.grid(row = 2, column =1)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
 #packVoltageLabel.pack()
 
@@ -162,7 +162,7 @@ packVoltageMeasure = Label(
     bg = 'white'
 
 )
-packVoltageMeasure.grid(row = 5, column =1)
+packVoltageMeasure.grid(row = 3, column =1)
 #packVoltageMeasure.pack()
 
 
