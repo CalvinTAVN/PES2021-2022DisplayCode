@@ -257,7 +257,7 @@ def on_closing():
 
 #Display Tkinter Protocols
 display.protocol("WM_DELETE_WINDOW", on_closing)
-display.mainloop()
+
 
 
 ##################################################
@@ -328,4 +328,4 @@ if (turnOffRaspberryPi):
 
 #Display Tkinter Protocols
 #display.protocol("WM_DELETE_WINDOW", on_closing)
-#display.mainloop()
+display.mainloop()
