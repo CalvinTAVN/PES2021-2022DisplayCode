@@ -327,6 +327,6 @@ time.sleep(3)
 if (turnOffRaspberryPi):
     os.system("sudo shutdown -h now")
 
-#Display Tkinter Protocols
+#Display Tkinter Protocols test
 #display.protocol("WM_DELETE_WINDOW", on_closing)
 #display.mainloop()
