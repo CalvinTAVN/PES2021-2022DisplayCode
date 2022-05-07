@@ -162,7 +162,7 @@ packVoltageMeasure = Label(
     bg = 'white'
 
 )
-packVoltageMeasure.grid(row = 5, column =2, columnspan= 3, rowspan=3)
+packVoltageMeasure.grid(row = 5, column =2)
 #packVoltageMeasure.pack()
 
 
