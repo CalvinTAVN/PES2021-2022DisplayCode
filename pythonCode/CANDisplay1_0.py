@@ -149,7 +149,7 @@ packVoltageLabel = Label(
     bg = 'white'
 
 )
-packVoltageLabel.grid(row = 4, column =3)
+packVoltageLabel.grid(row = 4, column =2)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
 #packVoltageLabel.pack()
 
@@ -162,7 +162,7 @@ packVoltageMeasure = Label(
     bg = 'white'
 
 )
-packVoltageMeasure.grid(row = 5, column =3)
+packVoltageMeasure.grid(row = 5, column =2, columnspan= 3, rowspan=3)
 #packVoltageMeasure.pack()
 
 
@@ -327,6 +327,6 @@ time.sleep(3)
 if (turnOffRaspberryPi):
     os.system("sudo shutdown -h now")
 
-#Display Tkinter Protocols test
+#Display Tkinter Protocols
 #display.protocol("WM_DELETE_WINDOW", on_closing)
 #display.mainloop()
