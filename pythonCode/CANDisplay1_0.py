@@ -67,7 +67,7 @@ lowTempMeasure.grid(row = 1, column =0)
 
 highTempLabel = Label(
     display,
-    text = "highTempLabel",
+    text = "highTemp",
     font = (21),
     padx = 10,
     pady = 5,
@@ -149,20 +149,20 @@ packVoltageLabel = Label(
     bg = 'white'
 
 )
-packVoltageLabel.grid(row = 0, column =4)
+packVoltageLabel.grid(row = 4, column =3)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
 #packVoltageLabel.pack()
 
 packVoltageMeasure = Label(
     display,
     text = "0 for now",
-    font = (21),
+    font = (200),
     padx = 10,
     pady = 5,
     bg = 'white'
 
 )
-packVoltageMeasure.grid(row = 1, column =4)
+packVoltageMeasure.grid(row = 5, column =3)
 #packVoltageMeasure.pack()
 
 
@@ -218,7 +218,7 @@ highCellVoltageMeasure.grid(row = 1, column =6)
 
 avgCellVoltageLabel = Label(
     display,
-    text = "avgCellVoltageLabel",
+    text = "avgCellVoltage",
     font = (21),
     padx = 10,
     pady = 5,
@@ -299,7 +299,7 @@ while runner:
                 avgCellVoltage = dataArray[5]
                 packCurrentMeasure.config(text = str(packCurrent))
                 packVoltageMeasure.config(text = str(packVoltage))
-                lowCellVoltageMeasure.config(text=str([lowCellVoltage]))
+                lowCellVoltageMeasure.config(text=str(lowCellVoltage))
                 highCellVoltageMeasure.config(text=str(highCellVoltage))
                 avgCellVoltageMeasure.config(text=str(avgCellVoltage))
                 #avgV_lbl.config(text=str(value3)) Make Label for this as well
