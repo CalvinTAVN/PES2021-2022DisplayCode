@@ -244,9 +244,7 @@ avgCellVoltageMeasure.grid(row = 1, column =7)
 
 display.update();
 
-#Display Tkinter Protocols
-display.protocol("WM_DELETE_WINDOW", on_closing)
-display.mainloop()
+
 
 ######################################################
 
@@ -256,6 +254,13 @@ def on_closing():
     display.destroy()
 
 #######################################################
+
+#Display Tkinter Protocols
+display.protocol("WM_DELETE_WINDOW", on_closing)
+display.mainloop()
+
+
+##################################################
 
 #Initial Values for Files
 #note, use the semicolon to separate parameters
