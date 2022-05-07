@@ -242,9 +242,13 @@ avgCellVoltageMeasure.grid(row = 1, column =7)
 #avgCellVoltageMeasure.pack()
 
 
-
 display.update();
 
+#Display Tkinter Protocols
+display.protocol("WM_DELETE_WINDOW", on_closing)
+display.mainloop()
+
+######################################################
 
 def on_closing():
     #if messagebox.askokcancel("Quit", "Do you want to quit?"):
@@ -260,7 +264,7 @@ packCurrent = 0; packVoltage = 0; lowCellVoltage = 0; highCellVoltage = 0; avgCe
 
 # Creation of New File #note screen size is 1024x600
 print(dt_string)
-newFile = open('/home/pes/PES2021-2022DisplayCode/pythonCode/dataInfo/' + dt_string, 'w')
+newFile = open('dataInfo/' + dt_string, 'w')
 newFile.write("NewText File\n")
 newFile.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
               "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
@@ -317,6 +321,6 @@ time.sleep(3)
 if (turnOffRaspberryPi):
     os.system("sudo shutdown -h now")
 
-#Display Tkinter Protocols test
-display.protocol("WM_DELETE_WINDOW", on_closing)
-display.mainloop()
+#Display Tkinter Protocols
+#display.protocol("WM_DELETE_WINDOW", on_closing)
+#display.mainloop()
