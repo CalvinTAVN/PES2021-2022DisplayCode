@@ -270,7 +270,7 @@ packCurrent = 0; packVoltage = 0; lowCellVoltage = 0; highCellVoltage = 0; avgCe
 # Creation of New File #note screen size is 1024x600
 print(dt_string)
 newFile = open('/home/pes/dataInfo/' + dt_string, 'w')
-newFile.write("NewText File\n")
+newFile.write(dt_string + "\n")
 newFile.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
               "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
 runner = True
