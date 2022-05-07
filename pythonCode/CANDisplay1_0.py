@@ -269,33 +269,33 @@ while runner:
         currentTime = datetime.now();
         currentTimeString = currentTime.strftime("%M : %S")
         msg = can0.recv(3.0)
-        dataArray = msg.data
-        #print(msg)
-        #print(runner)
-        if (msg.arbitration_id == 1701):
-            avgTemp = dataArray[0]
-            lowTemp = dataArray[1]
-            highTemp = dataArray[2]
-            avgTempMeasure.config(text=str(avgTemp))
-            lowTempMeasure.config(text=str(lowTemp))
-            highTempMeasure.config(text=str(highTemp))
-            #avgV_lbl.config(text=str(value2)) Make Label for this
-        if(msg.arbitration_id == 1702):
-            packCurrent = dataArray[0]
-            packVoltage = dataArray[1]
-            lowCellVoltage = dataArray[3]
-            highCellVoltage = dataArray[4]
-            avgCellVoltage = dataArray[5]
-            packCurrentMeasure.config(text = str(packCurrent))
-            packVoltageMeasure.config(text = str(packVoltage))
-            lowCellVoltageMeasure.config(text=str([lowCellVoltage]))
-            highCellVoltageMeasure.config(text=str(highCellVoltage))
-            avgCellVoltageMeasure.config(text=str(avgCellVoltage))
-            #avgV_lbl.config(text=str(value3)) Make Label for this as well
-        newFile.write(currentTimeString + "|  " + str(lowTemp) + "   |   " + str(highTemp) +  "   |  " + str(avgTemp) +
-                      "   |     " + str(packCurrent) + "     |      " + str(packVoltage) + "     |      " + str(lowCellVoltage) +
-                      "      |      " + str(highCellVoltage) +       "         |      " + str(avgCellVoltage) + "\n")
-
+        if (msg != None):
+            dataArray = msg.data
+            #print(msg)
+            #print(runner)
+            if (msg.arbitration_id == 1701):
+                avgTemp = dataArray[0]
+                lowTemp = dataArray[1]
+                highTemp = dataArray[2]
+                avgTempMeasure.config(text=str(avgTemp))
+                lowTempMeasure.config(text=str(lowTemp))
+                highTempMeasure.config(text=str(highTemp))
+                #avgV_lbl.config(text=str(value2)) Make Label for this
+            if(msg.arbitration_id == 1702):
+                packCurrent = dataArray[0]
+                packVoltage = dataArray[1]
+                lowCellVoltage = dataArray[3]
+                highCellVoltage = dataArray[4]
+                avgCellVoltage = dataArray[5]
+                packCurrentMeasure.config(text = str(packCurrent))
+                packVoltageMeasure.config(text = str(packVoltage))
+                lowCellVoltageMeasure.config(text=str([lowCellVoltage]))
+                highCellVoltageMeasure.config(text=str(highCellVoltage))
+                avgCellVoltageMeasure.config(text=str(avgCellVoltage))
+                #avgV_lbl.config(text=str(value3)) Make Label for this as well
+            newFile.write(currentTimeString + "|  " + str(lowTemp) + "   |   " + str(highTemp) +  "   |  " + str(avgTemp) +
+                          "   |     " + str(packCurrent) + "     |      " + str(packVoltage) + "     |      " + str(lowCellVoltage) +
+                          "      |      " + str(highCellVoltage) +       "         |      " + str(avgCellVoltage) + "\n")
         display.update()
         continue
     except TclError:
@@ -303,7 +303,8 @@ while runner:
         break
 
 #Tkinter off
-display.destroy()
+if (turnOffRaspberryPi):
+    display.destroy()
 
 #CAN ending protocol
 newFile.close();
