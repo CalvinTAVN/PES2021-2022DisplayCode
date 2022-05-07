@@ -81,7 +81,7 @@ highTempLabel.grid(row = 3, column =5)
 highTempMeasure = Label(
     display,
     text = "0 for now",
-    font = ('Verdana', 200),
+    font = ('Verdana', 150),
     padx = 10,
     pady = 5,
     bg = 'white'
@@ -156,7 +156,7 @@ packVoltageLabel.grid(row = 4, column =1)
 packVoltageMeasure = Label(
     display,
     text = "0 for now",
-    font = ('Verdana', 200),
+    font = ('Verdana', 150),
     padx = 10,
     pady = 5,
     bg = 'white'
