@@ -316,6 +316,7 @@ while runner:
 if (turnOffRaspberryPi):
     display.destroy()
 
+display.mainloop()
 #CAN ending protocol
 newFile.close();
 os.system("sudo ifconfig can0 down")
@@ -328,4 +329,4 @@ if (turnOffRaspberryPi):
 
 #Display Tkinter Protocols
 #display.protocol("WM_DELETE_WINDOW", on_closing)
-display.mainloop()
+#display.mainloop()
