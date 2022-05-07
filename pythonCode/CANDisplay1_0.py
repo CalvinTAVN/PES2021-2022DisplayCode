@@ -15,7 +15,8 @@ turnOffRaspberryPi = False;
 
 def Shutdown(channel):
     print("Shutting Down")
-    global runner
+    global runner;
+    global turnOffRaspberryPi;
     runner = False;
     turnOffRaspberryPi = True;
 
