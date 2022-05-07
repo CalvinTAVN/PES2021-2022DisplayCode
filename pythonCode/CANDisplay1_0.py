@@ -74,7 +74,7 @@ highTempLabel = Label(
     bg = 'white'
 
 )
-highTempLabel.grid(row = 3, column =5)
+highTempLabel.grid(row = 2, column =4)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
 #highTempLabel.pack()
 
@@ -87,7 +87,7 @@ highTempMeasure = Label(
     bg = 'white'
 
 )
-highTempMeasure.grid(row = 4, column =5)
+highTempMeasure.grid(row = 3, column =4)
 #highTempMeasure.pack()
 
 avgTempLabel = Label(
