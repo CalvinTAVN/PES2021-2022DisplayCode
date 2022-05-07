@@ -68,26 +68,26 @@ lowTempMeasure.grid(row = 1, column =0)
 highTempLabel = Label(
     display,
     text = "highTemp",
-    font = (21),
+    font = ('Verdana', 30),
     padx = 10,
     pady = 5,
     bg = 'white'
 
 )
-highTempLabel.grid(row = 0, column =1)
+highTempLabel.grid(row = 3, column =5)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
 #highTempLabel.pack()
 
 highTempMeasure = Label(
     display,
     text = "0 for now",
-    font = (21),
+    font = ('Verdana', 200),
     padx = 10,
     pady = 5,
     bg = 'white'
 
 )
-highTempMeasure.grid(row = 1, column =1)
+highTempMeasure.grid(row = 4, column =5)
 #highTempMeasure.pack()
 
 avgTempLabel = Label(
@@ -149,7 +149,7 @@ packVoltageLabel = Label(
     bg = 'white'
 
 )
-packVoltageLabel.grid(row = 4, column =2)
+packVoltageLabel.grid(row = 4, column =1)
 #avgV_lbl.place(anchor = NW,bordermode=OUTSIDE, height=40, width=100, relx=0.5, rely=0.5)
 #packVoltageLabel.pack()
 
@@ -162,7 +162,7 @@ packVoltageMeasure = Label(
     bg = 'white'
 
 )
-packVoltageMeasure.grid(row = 5, column =2)
+packVoltageMeasure.grid(row = 5, column =1)
 #packVoltageMeasure.pack()
 
 
