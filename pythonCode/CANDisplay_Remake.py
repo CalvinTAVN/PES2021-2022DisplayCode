@@ -122,11 +122,11 @@ class Display:
     def on_closing(self, channel):
         self.parent.destroy()
 
-
-def shutdown(channel):
-    print("Shutting Down")
-    global turnOffRaspberryPi
-    turnOffRaspberryPi = True
+    def shutdown(self, channel):
+        print("Shutting Down")
+        global turnOffRaspberryPi
+        turnOffRaspberryPi = True
+        self.parent.destroy()
 
 
 if __name__ == "__main__":
@@ -141,7 +141,7 @@ if __name__ == "__main__":
     display = Display(root)
     display.update_labels()
     root.protocol("WM_DELETE_WINDOW", display.on_closing)
-    GPIO.add_event_detect(4, GPIO.FALLING, callback=display.on_closing, bouncetime=2000)
+    GPIO.add_event_detect(4, GPIO.FALLING, callback=display.shutdown, bouncetime=2000)
     root.mainloop()
 
     # Turning off Raspberry Pi
