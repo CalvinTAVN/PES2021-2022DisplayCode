@@ -119,7 +119,7 @@ class Display:
             print(ex)
         self.parent.after(1000, self.update_labels)
 
-    def on_closing(self):
+    def on_closing(self, channel):
         self.parent.destroy()
 
 
@@ -146,5 +146,6 @@ if __name__ == "__main__":
 
     # Turning off Raspberry Pi
     time.sleep(3)
-    # print("Would of shutdown")
-    os.system("sudo shutdown -h now")
+    if (turnOffRaspberryPi):
+        # print("Would of shutdown")
+        os.system("sudo shutdown -h now")
