@@ -1,10 +1,11 @@
 #!/usr/bin/python
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 import os
 import can
 from datetime import datetime
 from tkinter import *
+
 
 class Display:
     def __init__(self, parent):
@@ -114,14 +115,36 @@ class Display:
             currentTime = datetime.now()
             currentTimeString = currentTime.strftime("%M : %S")
             self.highTempMeasure.config(text=str(currentTimeString))
-            msg = can0.recv(3)
         except Exception as ex:
             print(ex)
         self.parent.after(1000, self.update_labels)
 
+    def on_closing(self):
+        self.parent.destroy()
+
+
+def shutdown(channel):
+    print("Shutting Down")
+    global turnOffRaspberryPi
+    turnOffRaspberryPi = True
+
 
 if __name__ == "__main__":
+    # ShutDown Button Setup
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+    # Variable to activate the "turn off the raspberry pi
+    turnOffRaspberryPi = False
+
     root = Tk()
     display = Display(root)
     display.update_labels()
+    root.protocol("WM_DELETE_WINDOW", display.on_closing)
+    GPIO.add_event_detect(4, GPIO.FALLING, callback=display.on_closing, bouncetime=2000)
     root.mainloop()
+
+    # Turning off Raspberry Pi
+    time.sleep(3)
+    # print("Would of shutdown")
+    os.system("sudo shutdown -h now")
