@@ -21,6 +21,7 @@ class Display:
         self.now = datetime.now()
         self.dt_string = self.now.strftime("%d_%m_%Y,%H_%M_%S")
         self.can0 = can.interface.Bus(channel='can0', bustype='socketcan')
+        self.count = 0
 
         # Configure Parent Frame
         self.parent.geometry("1024x600")
@@ -113,10 +114,10 @@ class Display:
         self.highCellVoltageMeasure.grid(row=1, column=2)
 
         print(self.dt_string)
-        with open('/home/pes/dataInfo/' + self.dt_string, 'w') as newFile:
-            newFile.write(self.dt_string + "\n")
-            newFile.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
-                          "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
+        self.new_file = open('/home/pes/dataInfo/' + self.dt_string, 'w')
+        self.new_file.write(self.dt_string + "\n")
+        self.new_file.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
+                       "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
 
     def update_labels(self):
         try:
@@ -125,8 +126,9 @@ class Display:
             msg = self.can0.recv(3.0)
             if (msg != None):
                 dataArray = msg.data
-                # print(msg)
-                # print(runner)
+                if self.count % 10 == 0:
+                    print(msg)
+                self.count += 1
                 if (msg.arbitration_id == 1701):
                     self.avgTemp = dataArray[0]
                     self.lowTemp = dataArray[1]
@@ -148,27 +150,29 @@ class Display:
                     self.avgCellVoltageMeasure.config(text=str(self.avgCellVoltage))
                     # avgV_lbl.config(text=str(value3)) Make Label for this as well
 
-                with open('/home/pes/dataInfo/' + self.dt_string, 'a') as newFile:
-                    newFile.write(currentTimeString + "|  " + str(self.lowTemp) + "   |   " + str(self.highTemp) +
+                self.new_file.write(currentTimeString + "|  " + str(self.lowTemp) + "   |   " + str(self.highTemp) +
                                   "   |  " + str(self.avgTemp) + "   |     " + str(self.packCurrent) + "     |      " +
                                   str(self.packVoltage) + "     |      " + str(self.lowCellVoltage) + "      |      " +
                                   str(self.highCellVoltage) + "         |      " + str(self.avgCellVoltage) + "\n")
+
+
         except TclError as ex:
             print(ex)
-            with open('/home/pes/dataInfo/' + self.dt_string, 'a') as newFile:
-                newFile.write('End')
+            self.new_file.write('End')
         except Exception as ex:
             print(ex)
 
         self.parent.after(1000, self.update_labels)
 
     def on_closing(self, channel):
+        self.new_file.close()
         self.parent.destroy()
 
     def shutdown(self, channel):
         print("Shutting Down")
         global turnOffRaspberryPi
         turnOffRaspberryPi = True
+        self.new_file.close()
         self.parent.destroy()
 
 
