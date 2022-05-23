@@ -201,6 +201,7 @@ if __name__ == "__main__":
 
     # Turning off Raspberry Pi
     time.sleep(3)
+    os.system("sudo ifconfig can0 down")
     if turnOffRaspberryPi:
         # print("Would of shutdown")
         os.system("sudo shutdown -h now")
