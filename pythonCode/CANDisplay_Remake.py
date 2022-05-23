@@ -124,11 +124,12 @@ class Display:
             currentTime = datetime.now()
             currentTimeString = currentTime.strftime("%M : %S")
             msg = self.can0.recv(3.0)
+            if self.count % 10 == 0:
+                print(msg)
             if (msg != None):
                 dataArray = msg.data
                 if self.count % 10 == 0:
                     print(msg)
-                self.count += 1
                 if (msg.arbitration_id == 1701):
                     self.avgTemp = dataArray[0]
                     self.lowTemp = dataArray[1]
@@ -154,6 +155,7 @@ class Display:
                                   "   |  " + str(self.avgTemp) + "   |     " + str(self.packCurrent) + "     |      " +
                                   str(self.packVoltage) + "     |      " + str(self.lowCellVoltage) + "      |      " +
                                   str(self.highCellVoltage) + "         |      " + str(self.avgCellVoltage) + "\n")
+                self.count += 1
 
 
         except TclError as ex:
