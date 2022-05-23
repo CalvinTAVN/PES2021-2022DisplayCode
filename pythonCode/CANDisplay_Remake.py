@@ -168,7 +168,7 @@ class Display:
 
         self.parent.after(1000, self.update_labels)
 
-    def on_closing(self, channel):
+    def on_closing(self):
         self.new_file.close()
         self.parent.destroy()
 
