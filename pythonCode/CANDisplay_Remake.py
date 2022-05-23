@@ -10,7 +10,6 @@ from tkinter import *
 class Display:
     def __init__(self, parent):
         self.parent = parent
-        self.count = 0
         self.lowTemp = 0
         self.highTemp = 0
         self.avgTemp = 0
@@ -19,6 +18,9 @@ class Display:
         self.lowCellVoltage = 0
         self.highCellVoltage = 0
         self.avgCellVoltage = 0
+        self.now = datetime.now()
+        self.dt_string = self.now.strftime("%d_%m_%Y,%H_%M_%S")
+        self.can0 = can.interface.Bus(channel='can0', bustype='socketcan')
 
         # Configure Parent Frame
         self.parent.geometry("1024x600")
@@ -110,13 +112,54 @@ class Display:
                                             bg='white')
         self.highCellVoltageMeasure.grid(row=1, column=2)
 
+        print(self.dt_string)
+        with open('/home/pes/dataInfo/' + self.dt_string, 'w') as newFile:
+            newFile.write(self.dt_string + "\n")
+            newFile.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
+                          "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
+
     def update_labels(self):
         try:
             currentTime = datetime.now()
             currentTimeString = currentTime.strftime("%M : %S")
-            self.highTempMeasure.config(text=str(currentTimeString))
+            msg = self.can0.recv(3.0)
+            if (msg != None):
+                dataArray = msg.data
+                # print(msg)
+                # print(runner)
+                if (msg.arbitration_id == 1701):
+                    self.avgTemp = dataArray[0]
+                    self.lowTemp = dataArray[1]
+                    self.highTemp = dataArray[2]
+                    self.avgTempMeasure.config(text=str(self.avgTemp))
+                    self.lowTempMeasure.config(text=str(self.lowTemp))
+                    self.highTempMeasure.config(text=str(self.highTemp))
+                    # avgV_lbl.config(text=str(value2)) Make Label for this
+                if (msg.arbitration_id == 1702):
+                    self.packCurrent = dataArray[0]
+                    self.packVoltage = dataArray[1]
+                    self.lowCellVoltage = dataArray[3]
+                    self.highCellVoltage = dataArray[4]
+                    self.avgCellVoltage = dataArray[5]
+                    self.packCurrentMeasure.config(text=str(self.packCurrent))
+                    self.packVoltageMeasure.config(text=str(self.packVoltage))
+                    self.lowCellVoltageMeasure.config(text=str(self.lowCellVoltage))
+                    self.highCellVoltageMeasure.config(text=str(self.highCellVoltage))
+                    self.avgCellVoltageMeasure.config(text=str(self.avgCellVoltage))
+                    # avgV_lbl.config(text=str(value3)) Make Label for this as well
+
+                with open('/home/pes/dataInfo/' + self.dt_string, 'a') as newFile:
+                    newFile.write(currentTimeString + "|  " + str(self.lowTemp) + "   |   " + str(self.highTemp) +
+                                  "   |  " + str(self.avgTemp) + "   |     " + str(self.packCurrent) + "     |      " +
+                                  str(self.packVoltage) + "     |      " + str(self.lowCellVoltage) + "      |      " +
+                                  str(self.highCellVoltage) + "         |      " + str(self.avgCellVoltage) + "\n")
+        except TclError as ex:
+            print(ex)
+            with open('/home/pes/dataInfo/' + self.dt_string, 'a') as newFile:
+                newFile.write('End')
         except Exception as ex:
             print(ex)
+
         self.parent.after(1000, self.update_labels)
 
     def on_closing(self, channel):
@@ -130,6 +173,10 @@ class Display:
 
 
 if __name__ == "__main__":
+    # Can BUS Setup
+    os.system("sudo ip link set can0 type can bitrate 500000")
+    os.system("sudo ifconfig can0 up")
+
     # ShutDown Button Setup
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -146,6 +193,6 @@ if __name__ == "__main__":
 
     # Turning off Raspberry Pi
     time.sleep(3)
-    if (turnOffRaspberryPi):
+    if turnOffRaspberryPi:
         # print("Would of shutdown")
         os.system("sudo shutdown -h now")
