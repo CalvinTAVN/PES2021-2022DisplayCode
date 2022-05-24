@@ -279,7 +279,6 @@ while runner:
         currentTime = datetime.now();
         currentTimeString = currentTime.strftime("%M : %S")
         msg = can0.recv(3.0)
-        print(msg)
         if (msg != None):
             dataArray = msg.data
             #print(msg)

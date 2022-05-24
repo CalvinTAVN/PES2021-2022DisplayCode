@@ -124,12 +124,9 @@ class Display:
             currentTime = datetime.now()
             currentTimeString = currentTime.strftime("%M : %S")
             msg = self.can0.recv(3.0)
-            if self.count % 10 == 0:
-                print("outside: ", end='')
-                print(msg)
             if (msg != None):
                 dataArray = msg.data
-                if self.count % 10 == 0:
+                if self.count % 1 == 0:
                     print("inside: ", end='')
                     print(msg)
                 if (msg.arbitration_id == 1701):
