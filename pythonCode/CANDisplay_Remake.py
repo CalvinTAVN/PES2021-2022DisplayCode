@@ -118,6 +118,8 @@ class Display:
         self.new_file.write(self.dt_string + "\n")
         self.new_file.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
                        "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
+        self.new_file.flush()
+        print(type(self.new_file))
 
     def update_labels(self):
         try:
@@ -130,7 +132,7 @@ class Display:
                     print('-----------------------------')
                     print('msg: ' + str(msg))
                     print('arb id: ' + str(msg.arbitration_id))
-                    print('type: ' + str(type(msg)))
+                    print('data: ' + str(msg.data))
                     print('-----------------------------')
                 if (msg.arbitration_id == 1701):
                     self.avgTemp = dataArray[0]
@@ -157,12 +159,14 @@ class Display:
                                   "   |  " + str(self.avgTemp) + "   |     " + str(self.packCurrent) + "     |      " +
                                   str(self.packVoltage) + "     |      " + str(self.lowCellVoltage) + "      |      " +
                                   str(self.highCellVoltage) + "         |      " + str(self.avgCellVoltage) + "\n")
+                self.new_file.flush()
                 self.count += 1
 
 
         except TclError as ex:
             print(ex)
             self.new_file.write('End')
+            self.new_file.flush()
         except Exception as ex:
             print(ex)
 
