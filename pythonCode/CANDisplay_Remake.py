@@ -127,8 +127,11 @@ class Display:
             if (msg != None):
                 dataArray = msg.data
                 if self.count % 1 == 0:
-                    print("inside: ", end='')
-                    print(msg)
+                    print('-----------------------------')
+                    print('msg: ' + str(msg))
+                    print('arb id: ' + str(msg.arbitration_id))
+                    print('type: ' + str(type(msg)))
+                    print('-----------------------------')
                 if (msg.arbitration_id == 1701):
                     self.avgTemp = dataArray[0]
                     self.lowTemp = dataArray[1]
