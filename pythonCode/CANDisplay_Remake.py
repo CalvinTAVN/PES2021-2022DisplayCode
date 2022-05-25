@@ -119,7 +119,6 @@ class Display:
         self.new_file.write("Time   |lowTemp|highTemp|avgTemp|packCurrent|" +
                        "packVoltage|lowCellVoltage|highCellVoltage|avgCellVoltage\n")
         self.new_file.flush()
-        print(type(self.new_file))
 
     def update_labels(self):
         try:
@@ -128,7 +127,7 @@ class Display:
             msg = self.can0.recv(3.0)
             if (msg != None):
                 dataArray = msg.data
-                if self.count % 1 == 0:
+                if self.count % 1 == 5:
                     print('-----------------------------')
                     print('msg: ' + str(msg))
                     print('arb id: ' + str(msg.arbitration_id))
