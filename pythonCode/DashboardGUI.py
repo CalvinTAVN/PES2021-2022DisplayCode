@@ -24,14 +24,14 @@ class DashboardGUI:
         ## Speed ##
         speed_module = PyQt6.QtWidgets.QGridLayout()
 
-        # Speed #
-        speed_layout = PyQt6.QtWidgets.QGridLayout()
-        speed_label = PyQt6.QtWidgets.QLabel('Speed')
-        speed_layout.addWidget(speed_label, 0, 0)
-        self.values['speed'] = PyQt6.QtWidgets.QLabel()
-        speed_layout.addWidget(self.values['speed'], 1, 0)
+        # MPH #
+        mph_layout = PyQt6.QtWidgets.QGridLayout()
+        mph_label = PyQt6.QtWidgets.QLabel('MPH')
+        mph_layout.addWidget(mph_label, 0, 0)
+        self.values['mph'] = PyQt6.QtWidgets.QLabel()
+        mph_layout.addWidget(self.values['mph'], 1, 0)
 
-        speed_module.addLayout(speed_layout, 0, 0)
+        speed_module.addLayout(mph_layout, 0, 0)
 
         # Rotations per minute #
         rpm_layout = PyQt6.QtWidgets.QGridLayout()
@@ -42,7 +42,17 @@ class DashboardGUI:
         
         speed_module.addLayout(rpm_layout, 1, 0)
 
+        # Knots #
+        knots_layout = PyQt6.QtWidgets.QGridLayout()
+        knots_label = PyQt6.QtWidgets.QLabel('Knots')
+        knots_layout.addWidget(knots_label, 0, 0)
+        self.values['knots'] = PyQt6.QtWidgets.QLabel()
+        knots_layout.addWidget(self.values['knots'], 1, 0)
+
+        speed_module.addLayout(knots_layout, 2, 0)
+
         self.layout.addLayout(speed_module, 0, 0, 2, 1)
+        
 
         ## Controller ##
         controller_module = PyQt6.QtWidgets.QGridLayout()
@@ -254,8 +264,9 @@ def main():
     gui.display()
 
     def update_labels():
-        gui.edit_widget('speed', str(0))
+        gui.edit_widget('mph', str(0))
         gui.edit_widget('rpm', str(0))
+        gui.edit_widget('knots', str(0))
         gui.edit_widget('controller_temperature', str(0))
         gui.edit_widget('motor_temperature', str(0))
         gui.edit_widget('cell1_temperature', str(0))
