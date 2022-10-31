@@ -245,6 +245,38 @@ class DashboardGUI:
 
         battery_module.addLayout(cell5_module, 4, 0)
 
+        ## Cell Stats ##
+        cell_stats_module = PyQt6.QtWidgets.QGridLayout()
+
+        # Lowest Voltage #
+        lowest_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        lowest_voltage_label = PyQt6.QtWidgets.QLabel('Lowest Voltage')
+        lowest_voltage_layout.addWidget(lowest_voltage_label, 0, 0)
+        self.values['lowest_voltage'] = PyQt6.QtWidgets.QLabel()
+        lowest_voltage_layout.addWidget(self.values['lowest_voltage'], 1, 0)
+
+        cell_stats_module.addLayout(lowest_voltage_layout, 0, 0)
+
+        # Average Voltage #
+        average_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        average_voltage_label = PyQt6.QtWidgets.QLabel('Average Voltage')
+        average_voltage_layout.addWidget(average_voltage_label, 0, 0)
+        self.values['average_voltage'] = PyQt6.QtWidgets.QLabel()
+        average_voltage_layout.addWidget(self.values['average_voltage'], 1, 0)
+
+        cell_stats_module.addLayout(average_voltage_layout, 0, 1)
+
+        # Highest Voltage #
+        highest_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        highest_voltage_label = PyQt6.QtWidgets.QLabel('Highest Voltage')
+        highest_voltage_layout.addWidget(highest_voltage_label, 0, 0)
+        self.values['highest_voltage'] = PyQt6.QtWidgets.QLabel()
+        highest_voltage_layout.addWidget(self.values['highest_voltage'], 1, 0)
+
+        cell_stats_module.addLayout(highest_voltage_layout, 0, 2)
+
+        battery_module.addLayout(cell_stats_module, 5, 0)
+
         self.layout.addLayout(battery_module, 0, 2, 2, 1)
 
 
@@ -284,6 +316,9 @@ def main():
         gui.edit_widget('cell5_temperature', str(0))
         gui.edit_widget('cell5_voltage', str(0))
         gui.edit_widget('cell5_current', str(0))
+        gui.edit_widget('lowest_voltage', str(0))
+        gui.edit_widget('average_voltage', str(0))
+        gui.edit_widget('highest_voltage', str(0))
 
     timer = PyQt6.QtCore.QTimer()
     timer.timeout.connect(update_labels)
