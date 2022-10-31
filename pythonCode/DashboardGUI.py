@@ -1,170 +1,284 @@
-#!/usr/bin/python
-from datetime import datetime
-from tkinter import *
-from random import randint
+import PyQt6
+import PyQt6.QtWidgets
+import PyQt6.QtCore
+import sys
+
+'''
+Battery box - bms, motor controller
+battery temperature, motor, motor controller
+battery current, motor controller current (phase current)
+battery voltage (individual, total pack, lowest cell)
+'''
+
+class DashboardGUI:
+
+    def __init__(self):
+        self.window = PyQt6.QtWidgets.QMainWindow()
+        self.frame = PyQt6.QtWidgets.QFrame()
+        self.layout = PyQt6.QtWidgets.QGridLayout()
+
+        self.values = {}
+        self.setup_gui()
+
+    def setup_gui(self):
+        ## Speed ##
+        speed_module = PyQt6.QtWidgets.QGridLayout()
+
+        # Speed #
+        speed_layout = PyQt6.QtWidgets.QGridLayout()
+        speed_label = PyQt6.QtWidgets.QLabel('Speed')
+        speed_layout.addWidget(speed_label, 0, 0)
+        self.values['speed'] = PyQt6.QtWidgets.QLabel()
+        speed_layout.addWidget(self.values['speed'], 1, 0)
+
+        speed_module.addLayout(speed_layout, 0, 0)
+
+        # Rotations per minute #
+        rpm_layout = PyQt6.QtWidgets.QGridLayout()
+        rpm_label = PyQt6.QtWidgets.QLabel('RPM')
+        rpm_layout.addWidget(rpm_label, 0, 0)
+        self.values['rpm'] = PyQt6.QtWidgets.QLabel()
+        rpm_layout.addWidget(self.values['rpm'], 1, 0)
+        
+        speed_module.addLayout(rpm_layout, 1, 0)
+
+        self.layout.addLayout(speed_module, 0, 0, 2, 1)
+
+        ## Controller ##
+        controller_module = PyQt6.QtWidgets.QGridLayout()
+        
+        # Temperature #
+        controller_layout = PyQt6.QtWidgets.QGridLayout()
+        controller_label = PyQt6.QtWidgets.QLabel('Controller Temperature')
+        controller_layout.addWidget(controller_label, 0, 0)
+        self.values['controller_temperature'] = PyQt6.QtWidgets.QLabel()
+        controller_layout.addWidget(self.values['controller_temperature'], 1, 0)
+
+        controller_module.addLayout(controller_layout, 0, 0)
+
+        self.layout.addLayout(controller_module, 0, 1)
+
+        ## Motor ##
+        motor_module = PyQt6.QtWidgets.QGridLayout()
+        
+        # Temperature #
+        motor_layout = PyQt6.QtWidgets.QGridLayout()
+        motor_label = PyQt6.QtWidgets.QLabel('Motor Temperature')
+        motor_layout.addWidget(motor_label, 0, 0)
+        self.values['motor_temperature'] = PyQt6.QtWidgets.QLabel()
+        motor_layout.addWidget(self.values['motor_temperature'], 1, 0)
+
+        motor_module.addLayout(motor_layout, 0, 0)
+
+        self.layout.addLayout(motor_module, 1, 1)
+
+        ### Battery ###
+        battery_module = PyQt6.QtWidgets.QGridLayout()
+        
+        ## Cell 1 ##
+        cell1_module = PyQt6.QtWidgets.QGridLayout()
+
+        # Temperature #
+        cell1_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 1 Temperature')
+        cell1_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+        self.values['cell1_temperature'] = PyQt6.QtWidgets.QLabel()
+        cell1_temperature_layout.addWidget(self.values['cell1_temperature'], 1, 0)
+
+        cell1_module.addLayout(cell1_temperature_layout, 0, 0)
+
+        # Voltage #
+        cell1_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 1 Voltage')
+        cell1_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+        self.values['cell1_voltage'] = PyQt6.QtWidgets.QLabel()
+        cell1_voltage_layout.addWidget(self.values['cell1_voltage'], 1, 0)
+
+        cell1_module.addLayout(cell1_voltage_layout, 0, 1)
+
+        # Current #
+        cell1_current_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 1 Current')
+        cell1_current_layout.addWidget(cell_current_label, 0, 0)
+        self.values['cell1_current'] = PyQt6.QtWidgets.QLabel()
+        cell1_current_layout.addWidget(self.values['cell1_current'], 1, 0)
+
+        cell1_module.addLayout(cell1_current_layout, 0, 2)
+
+        battery_module.addLayout(cell1_module, 0, 0)
+
+        ## Cell 2 ##
+        cell2_module = PyQt6.QtWidgets.QGridLayout()
+
+        # Temperature #
+        cell2_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 2 Temperature')
+        cell2_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+        self.values['cell2_temperature'] = PyQt6.QtWidgets.QLabel()
+        cell2_temperature_layout.addWidget(self.values['cell2_temperature'], 1, 0)
+
+        cell2_module.addLayout(cell2_temperature_layout, 0, 0)
+
+        # Voltage #
+        cell2_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 2 Voltage')
+        cell2_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+        self.values['cell2_voltage'] = PyQt6.QtWidgets.QLabel()
+        cell2_voltage_layout.addWidget(self.values['cell2_voltage'], 1, 0)
+
+        cell2_module.addLayout(cell2_voltage_layout, 0, 1)
+
+        # Current #
+        cell2_current_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 2 Current')
+        cell2_current_layout.addWidget(cell_current_label, 0, 0)
+        self.values['cell2_current'] = PyQt6.QtWidgets.QLabel()
+        cell2_current_layout.addWidget(self.values['cell2_current'], 1, 0)
+
+        cell2_module.addLayout(cell2_current_layout, 0, 2)
+
+        battery_module.addLayout(cell2_module, 1, 0)
+
+        ## Cell 3 ##
+        cell3_module = PyQt6.QtWidgets.QGridLayout()
+
+        # Temperature #
+        cell3_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 3 Temperature')
+        cell3_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+        self.values['cell3_temperature'] = PyQt6.QtWidgets.QLabel()
+        cell3_temperature_layout.addWidget(self.values['cell3_temperature'], 1, 0)
+
+        cell3_module.addLayout(cell3_temperature_layout, 0, 0)
+
+        # Voltage #
+        cell3_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 3 Voltage')
+        cell3_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+        self.values['cell3_voltage'] = PyQt6.QtWidgets.QLabel()
+        cell3_voltage_layout.addWidget(self.values['cell3_voltage'], 1, 0)
+
+        cell3_module.addLayout(cell3_voltage_layout, 0, 1)
+
+        # Current #
+        cell3_current_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 3 Current')
+        cell3_current_layout.addWidget(cell_current_label, 0, 0)
+        self.values['cell3_current'] = PyQt6.QtWidgets.QLabel()
+        cell3_current_layout.addWidget(self.values['cell3_current'], 1, 0)
+
+        cell3_module.addLayout(cell3_current_layout, 0, 2)
+
+        battery_module.addLayout(cell3_module, 2, 0)
+
+        ## Cell 4 ##
+        cell4_module = PyQt6.QtWidgets.QGridLayout()
+
+        # Temperature #
+        cell4_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 4 Temperature')
+        cell4_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+        self.values['cell4_temperature'] = PyQt6.QtWidgets.QLabel()
+        cell4_temperature_layout.addWidget(self.values['cell4_temperature'], 1, 0)
+
+        cell4_module.addLayout(cell4_temperature_layout, 0, 0)
+
+        # Voltage #
+        cell4_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 4 Voltage')
+        cell4_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+        self.values['cell4_voltage'] = PyQt6.QtWidgets.QLabel()
+        cell4_voltage_layout.addWidget(self.values['cell4_voltage'], 1, 0)
+
+        cell4_module.addLayout(cell4_voltage_layout, 0, 1)
+
+        # Current #
+        cell4_current_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 4 Current')
+        cell4_current_layout.addWidget(cell_current_label, 0, 0)
+        self.values['cell4_current'] = PyQt6.QtWidgets.QLabel()
+        cell4_current_layout.addWidget(self.values['cell4_current'], 1, 0)
+
+        cell4_module.addLayout(cell4_current_layout, 0, 2)
+
+        battery_module.addLayout(cell4_module, 3, 0)
+
+        ## Cell 5 ##
+        cell5_module = PyQt6.QtWidgets.QGridLayout()
+
+        # Temperature #
+        cell5_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 5 Temperature')
+        cell5_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+        self.values['cell5_temperature'] = PyQt6.QtWidgets.QLabel()
+        cell5_temperature_layout.addWidget(self.values['cell5_temperature'], 1, 0)
+
+        cell5_module.addLayout(cell5_temperature_layout, 0, 0)
+
+        # Voltage #
+        cell5_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 5 Voltage')
+        cell5_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+        self.values['cell5_voltage'] = PyQt6.QtWidgets.QLabel()
+        cell5_voltage_layout.addWidget(self.values['cell5_voltage'], 1, 0)
+
+        cell5_module.addLayout(cell5_voltage_layout, 0, 1)
+
+        # Current #
+        cell5_current_layout = PyQt6.QtWidgets.QGridLayout()
+        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 5 Current')
+        cell5_current_layout.addWidget(cell_current_label, 0, 0)
+        self.values['cell5_current'] = PyQt6.QtWidgets.QLabel()
+        cell5_current_layout.addWidget(self.values['cell5_current'], 1, 0)
+
+        cell5_module.addLayout(cell5_current_layout, 0, 2)
+
+        battery_module.addLayout(cell5_module, 4, 0)
+
+        self.layout.addLayout(battery_module, 0, 2, 2, 1)
 
 
-class Display:
-    def __init__(self, parent):
-        self.parent = parent
-        self.lowTemp = 0
-        self.highTemp = 0
-        self.avgTemp = 0
-        self.packCurrent = 0
-        self.packVoltage = 0
-        self.lowCellVoltage = 0
-        self.highCellVoltage = 0
-        self.avgCellVoltage = 0
-        self.fg = 'black'
-        self.bg = 'white'
-        self.count = 1000
+        ### Global ###
+        self.frame.setLayout(self.layout)
+        self.window.setCentralWidget(self.frame) 
 
-        # Configure Parent Frame
-        self.parent.geometry("1024x600")
-        self.parent.configure(bg=self.bg, padx=5)
-        self.parent.rowconfigure(0, pad=15)
-        self.parent.rowconfigure(1, pad=20)
-        self.parent.rowconfigure(2, pad=20)
-        self.parent.title('PES Speedboat')
+    def display(self):
+        self.window.show()
+    
+    def edit_widget(self, key, label):
+        self.values[key].setText(label)
+        
+def main():
+    app = PyQt6.QtWidgets.QApplication(sys.argv)
+    gui = DashboardGUI()
+    gui.display()
 
-        # Configure Top Frame
-        self.topFrame = Frame(self.parent, bg=self.bg, highlightbackground=self.fg,
-                              highlightthickness=2, width=900, height=225)
-        self.topFrame.grid_propagate(False)
-        self.topFrame.place(anchor='center', relx=0.5, rely=0.25)
-        self.topFrame.rowconfigure(0, pad=20)
-        self.topFrame.columnconfigure(0, pad=40)
-        self.topFrame.columnconfigure(1, pad=40)
+    def update_labels():
+        gui.edit_widget('speed', str(0))
+        gui.edit_widget('rpm', str(0))
+        gui.edit_widget('controller_temperature', str(0))
+        gui.edit_widget('motor_temperature', str(0))
+        gui.edit_widget('cell1_temperature', str(0))
+        gui.edit_widget('cell1_voltage', str(0))
+        gui.edit_widget('cell1_current', str(0))
+        gui.edit_widget('cell2_temperature', str(0))
+        gui.edit_widget('cell2_voltage', str(0))
+        gui.edit_widget('cell2_current', str(0))
+        gui.edit_widget('cell3_temperature', str(0))
+        gui.edit_widget('cell3_voltage', str(0))
+        gui.edit_widget('cell3_current', str(0))
+        gui.edit_widget('cell4_temperature', str(0))
+        gui.edit_widget('cell4_voltage', str(0))
+        gui.edit_widget('cell4_current', str(0))
+        gui.edit_widget('cell5_temperature', str(0))
+        gui.edit_widget('cell5_voltage', str(0))
+        gui.edit_widget('cell5_current', str(0))
 
-        # Configure Middle Frame
-        self.middleFrame = Frame(self.parent, padx=5, pady=5, bg=self.bg, highlightbackground=self.fg,
-                                 highlightthickness=2, width=700, height=125)
-        # self.middleFrame.grid_propagate(False)
-        self.middleFrame.place(anchor='center', relx=0.5, rely=0.58)
-        self.middleFrame.rowconfigure(0, pad=10)
-        self.middleFrame.rowconfigure(1, pad=10)
-        self.middleFrame.columnconfigure(0, pad=10)
-        self.middleFrame.columnconfigure(1, pad=10)
-        self.middleFrame.columnconfigure(2, pad=10)
+    timer = PyQt6.QtCore.QTimer()
+    timer.timeout.connect(update_labels)
+    timer.start(10)
 
-        # Configure Bottom Frame
-        self.bottomFrame = Frame(self.parent, padx=5, pady=5, bg=self.bg, highlightbackground=self.fg,
-                                 highlightthickness=2, width=700, height=125)
-        self.bottomFrame.grid_propagate(False)
-        self.bottomFrame.place(anchor='center', relx=0.5, rely=0.82)
-        self.bottomFrame.rowconfigure(0, pad=10)
-        self.bottomFrame.rowconfigure(1, pad=10)
-        self.bottomFrame.columnconfigure(0, pad=10)
-        self.bottomFrame.columnconfigure(1, pad=10)
-        self.bottomFrame.columnconfigure(2, pad=10)
+    sys.exit(app.exec())
 
-        # Top Frame Labels
-        self.rpmLabel = Label(self.topFrame, text="RPM", font=('Verdana', 30), bg=self.bg, fg=self.fg)
-        self.rpmLabel.place(anchor='center', relx=0.25, rely=0.2)
-
-        self.rpmMeasure = Label(self.topFrame, text="0 for now", font=('Verdana', 70), bg=self.bg, fg=self.fg)
-        self.rpmMeasure.place(anchor='center', relx=0.25, rely=0.65)
-
-        self.speedLabel = Label(self.topFrame, text="Speed", font=('Verdana', 30), bg=self.bg, fg=self.fg)
-        self.speedLabel.place(anchor='center', relx=0.75, rely=0.2)
-
-        self.speedMeasure = Label(self.topFrame, text="100", font=('Verdana', 70), bg=self.bg, fg=self.fg)
-        self.speedMeasure.place(anchor='center', relx=0.75, rely=0.65)
-
-        # Middle Frame Labels
-        self.batteryTempLabel = Label(self.middleFrame, text="Battery Temp", font=('Verdana', 18), bg=self.bg,
-                                      fg=self.fg)
-        self.batteryTempLabel.grid(row=0, column=0)
-
-        self.batteryTempMeasure = Label(self.middleFrame, text="0 for now", font=('Verdana', 28), padx=25, bg=self.bg,
-                                        fg=self.fg)
-        self.batteryTempMeasure.grid(row=1, column=0)
-
-        self.controllerTempLabel = Label(self.middleFrame, text="Controller Temp", font=('Verdana', 18), bg=self.bg,
-                                         fg=self.fg)
-        self.controllerTempLabel.grid(row=0, column=1)
-
-        self.controllerTempMeasure = Label(self.middleFrame, text="0 for now", font=('Verdana', 28), padx=25,
-                                           bg=self.bg, fg=self.fg)
-        self.controllerTempMeasure.grid(row=1, column=1)
-
-        self.motorTempLabel = Label(self.middleFrame, text="Motor Temp", font=('Verdana', 18), bg=self.bg, fg=self.fg)
-        self.motorTempLabel.grid(row=0, column=2)
-
-        self.motorTempMeasure = Label(self.middleFrame, text="1 for now", font=('Verdana', 28), padx=25, bg=self.bg,
-                                      fg=self.fg)
-        self.motorTempMeasure.grid(row=1, column=2)
-
-        # Bottom Frame Labels
-        self.packCurrentLabel = Label(self.bottomFrame, text="Pack Current", font=('Verdana', 18), bg=self.bg,
-                                      fg=self.fg)
-        self.packCurrentLabel.grid(row=0, column=0)
-
-        self.packCurrentMeasure = Label(self.bottomFrame, text="0 for now", font=('Verdana', 28), padx=20, bg=self.bg,
-                                        fg=self.fg)
-        self.packCurrentMeasure.grid(row=1, column=0)
-
-        self.packVoltageLabel = Label(self.bottomFrame, text="Avg Cell Voltage", font=('Verdana', 18), bg=self.bg,
-                                      fg=self.fg)
-        self.packVoltageLabel.grid(row=0, column=1)
-
-        self.packMeasure = Label(self.bottomFrame, text="0 for now", font=('Verdana', 28), padx=20, bg=self.bg,
-                                 fg=self.fg)
-        self.packMeasure.grid(row=1, column=1)
-
-        self.lowCellVoltageLabel = Label(self.bottomFrame, text="Low Cell Voltage", font=('Verdana', 18), bg=self.bg,
-                                         fg=self.fg)
-        self.lowCellVoltageLabel.grid(row=0, column=2)
-
-        self.lowCellVoltageMeasure = Label(self.bottomFrame, text="0 for now", font=('Verdana', 28), padx=20,
-                                           bg=self.bg, fg=self.fg)
-        self.lowCellVoltageMeasure.grid(row=1, column=2)
-
-    def update_labels(self):
-        try:
-            currentTime = datetime.now()
-            currentTimeString = currentTime.strftime("%M : %S")
-            rpm = self.count
-            if rpm < 6000:
-                rpm_color = self.fg
-            elif rpm < 7200:
-                rpm_color = 'yellow'
-            else:
-                rpm_color = 'red'
-            self.rpmMeasure.config(text=str(self.count), fg=rpm_color)
-            self.speedMeasure.config(text=str(self.count/10))
-            self.count = (self.count + randint(0, 100)) % 10000
-        except Exception as ex:
-            print(ex)
-        self.parent.after(50, self.update_labels)
-
-    def on_closing(self):
-        self.parent.destroy()
-
-    def shutdown(self, channel):
-        print("Shutting Down")
-        global turnOffRaspberryPi
-        turnOffRaspberryPi = True
-        self.parent.destroy()
-
-
-if __name__ == "__main__":
-    # ShutDown Button Setup
-    # GPIO.setmode(GPIO.BCM)
-    # GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-    # Variable to activate the "turn off the raspberry pi
-    turnOffRaspberryPi = False
-
-    root = Tk()
-    display = Display(root)
-    display.update_labels()
-    root.protocol("WM_DELETE_WINDOW", display.on_closing)
-    # GPIO.add_event_detect(4, GPIO.FALLING, callback=display.shutdown, bouncetime=2000)
-    root.mainloop()
-
-    # Turning off Raspberry Pi
-    # time.sleep(3)
-    if turnOffRaspberryPi:
-        print("Would have shutdown")
-        # os.system("sudo shutdown -h now")
+if __name__ == '__main__':
+    main()
