@@ -2,7 +2,6 @@
 # import RPi.GPIO as GPIO
 import time
 import os
-import can
 from datetime import datetime
 from tkinter import *
 from random import randint
