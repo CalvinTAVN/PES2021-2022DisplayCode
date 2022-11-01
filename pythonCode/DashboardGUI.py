@@ -12,275 +12,26 @@ battery voltage (individual, total pack, lowest cell)
 
 class DashboardGUI:
 
-    def __init__(self):
+    def __init__(self, values):
         self.window = PyQt6.QtWidgets.QMainWindow()
         self.frame = PyQt6.QtWidgets.QFrame()
         self.layout = PyQt6.QtWidgets.QGridLayout()
-
-        self.values = {}
+        self.values = values
+        self.speed_module = self.SpeedModule(self.values).get_module()
+        self.controller_module = self.ControllerModule(self.values).get_module()
+        self.motor_module = self.MotorModule(self.values).get_module()
+        self.battery_module = self.BatteryModule(self.values).get_module()
         self.setup_gui()
 
     def setup_gui(self):
-        ## Speed ##
-        speed_module = PyQt6.QtWidgets.QGridLayout()
+        self.layout.addLayout(self.speed_module, 0, 0, 2, 1)
 
-        # MPH #
-        mph_layout = PyQt6.QtWidgets.QGridLayout()
-        mph_label = PyQt6.QtWidgets.QLabel('MPH')
-        mph_layout.addWidget(mph_label, 0, 0)
-        self.values['mph'] = PyQt6.QtWidgets.QLabel()
-        mph_layout.addWidget(self.values['mph'], 1, 0)
+        self.layout.addLayout(self.controller_module, 0, 1)
 
-        speed_module.addLayout(mph_layout, 0, 0)
+        self.layout.addLayout(self.motor_module, 1, 1)
 
-        # Rotations per minute #
-        rpm_layout = PyQt6.QtWidgets.QGridLayout()
-        rpm_label = PyQt6.QtWidgets.QLabel('RPM')
-        rpm_layout.addWidget(rpm_label, 0, 0)
-        self.values['rpm'] = PyQt6.QtWidgets.QLabel()
-        rpm_layout.addWidget(self.values['rpm'], 1, 0)
-        
-        speed_module.addLayout(rpm_layout, 1, 0)
+        self.layout.addLayout(self.battery_module, 0, 2, 2, 1)
 
-        # Knots #
-        knots_layout = PyQt6.QtWidgets.QGridLayout()
-        knots_label = PyQt6.QtWidgets.QLabel('Knots')
-        knots_layout.addWidget(knots_label, 0, 0)
-        self.values['knots'] = PyQt6.QtWidgets.QLabel()
-        knots_layout.addWidget(self.values['knots'], 1, 0)
-
-        speed_module.addLayout(knots_layout, 2, 0)
-
-        self.layout.addLayout(speed_module, 0, 0, 2, 1)
-        
-
-        ## Controller ##
-        controller_module = PyQt6.QtWidgets.QGridLayout()
-        
-        # Temperature #
-        controller_layout = PyQt6.QtWidgets.QGridLayout()
-        controller_label = PyQt6.QtWidgets.QLabel('Controller Temperature')
-        controller_layout.addWidget(controller_label, 0, 0)
-        self.values['controller_temperature'] = PyQt6.QtWidgets.QLabel()
-        controller_layout.addWidget(self.values['controller_temperature'], 1, 0)
-
-        controller_module.addLayout(controller_layout, 0, 0)
-
-        self.layout.addLayout(controller_module, 0, 1)
-
-        ## Motor ##
-        motor_module = PyQt6.QtWidgets.QGridLayout()
-        
-        # Temperature #
-        motor_layout = PyQt6.QtWidgets.QGridLayout()
-        motor_label = PyQt6.QtWidgets.QLabel('Motor Temperature')
-        motor_layout.addWidget(motor_label, 0, 0)
-        self.values['motor_temperature'] = PyQt6.QtWidgets.QLabel()
-        motor_layout.addWidget(self.values['motor_temperature'], 1, 0)
-
-        motor_module.addLayout(motor_layout, 0, 0)
-
-        self.layout.addLayout(motor_module, 1, 1)
-
-        ### Battery ###
-        battery_module = PyQt6.QtWidgets.QGridLayout()
-        
-        ## Cell 1 ##
-        cell1_module = PyQt6.QtWidgets.QGridLayout()
-
-        # Temperature #
-        cell1_temperature_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 1 Temperature')
-        cell1_temperature_layout.addWidget(cell_temperature_label, 0, 0)
-        self.values['cell1_temperature'] = PyQt6.QtWidgets.QLabel()
-        cell1_temperature_layout.addWidget(self.values['cell1_temperature'], 1, 0)
-
-        cell1_module.addLayout(cell1_temperature_layout, 0, 0)
-
-        # Voltage #
-        cell1_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 1 Voltage')
-        cell1_voltage_layout.addWidget(cell_voltage_label, 0, 0)
-        self.values['cell1_voltage'] = PyQt6.QtWidgets.QLabel()
-        cell1_voltage_layout.addWidget(self.values['cell1_voltage'], 1, 0)
-
-        cell1_module.addLayout(cell1_voltage_layout, 0, 1)
-
-        # Current #
-        cell1_current_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 1 Current')
-        cell1_current_layout.addWidget(cell_current_label, 0, 0)
-        self.values['cell1_current'] = PyQt6.QtWidgets.QLabel()
-        cell1_current_layout.addWidget(self.values['cell1_current'], 1, 0)
-
-        cell1_module.addLayout(cell1_current_layout, 0, 2)
-
-        battery_module.addLayout(cell1_module, 0, 0)
-
-        ## Cell 2 ##
-        cell2_module = PyQt6.QtWidgets.QGridLayout()
-
-        # Temperature #
-        cell2_temperature_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 2 Temperature')
-        cell2_temperature_layout.addWidget(cell_temperature_label, 0, 0)
-        self.values['cell2_temperature'] = PyQt6.QtWidgets.QLabel()
-        cell2_temperature_layout.addWidget(self.values['cell2_temperature'], 1, 0)
-
-        cell2_module.addLayout(cell2_temperature_layout, 0, 0)
-
-        # Voltage #
-        cell2_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 2 Voltage')
-        cell2_voltage_layout.addWidget(cell_voltage_label, 0, 0)
-        self.values['cell2_voltage'] = PyQt6.QtWidgets.QLabel()
-        cell2_voltage_layout.addWidget(self.values['cell2_voltage'], 1, 0)
-
-        cell2_module.addLayout(cell2_voltage_layout, 0, 1)
-
-        # Current #
-        cell2_current_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 2 Current')
-        cell2_current_layout.addWidget(cell_current_label, 0, 0)
-        self.values['cell2_current'] = PyQt6.QtWidgets.QLabel()
-        cell2_current_layout.addWidget(self.values['cell2_current'], 1, 0)
-
-        cell2_module.addLayout(cell2_current_layout, 0, 2)
-
-        battery_module.addLayout(cell2_module, 1, 0)
-
-        ## Cell 3 ##
-        cell3_module = PyQt6.QtWidgets.QGridLayout()
-
-        # Temperature #
-        cell3_temperature_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 3 Temperature')
-        cell3_temperature_layout.addWidget(cell_temperature_label, 0, 0)
-        self.values['cell3_temperature'] = PyQt6.QtWidgets.QLabel()
-        cell3_temperature_layout.addWidget(self.values['cell3_temperature'], 1, 0)
-
-        cell3_module.addLayout(cell3_temperature_layout, 0, 0)
-
-        # Voltage #
-        cell3_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 3 Voltage')
-        cell3_voltage_layout.addWidget(cell_voltage_label, 0, 0)
-        self.values['cell3_voltage'] = PyQt6.QtWidgets.QLabel()
-        cell3_voltage_layout.addWidget(self.values['cell3_voltage'], 1, 0)
-
-        cell3_module.addLayout(cell3_voltage_layout, 0, 1)
-
-        # Current #
-        cell3_current_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 3 Current')
-        cell3_current_layout.addWidget(cell_current_label, 0, 0)
-        self.values['cell3_current'] = PyQt6.QtWidgets.QLabel()
-        cell3_current_layout.addWidget(self.values['cell3_current'], 1, 0)
-
-        cell3_module.addLayout(cell3_current_layout, 0, 2)
-
-        battery_module.addLayout(cell3_module, 2, 0)
-
-        ## Cell 4 ##
-        cell4_module = PyQt6.QtWidgets.QGridLayout()
-
-        # Temperature #
-        cell4_temperature_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 4 Temperature')
-        cell4_temperature_layout.addWidget(cell_temperature_label, 0, 0)
-        self.values['cell4_temperature'] = PyQt6.QtWidgets.QLabel()
-        cell4_temperature_layout.addWidget(self.values['cell4_temperature'], 1, 0)
-
-        cell4_module.addLayout(cell4_temperature_layout, 0, 0)
-
-        # Voltage #
-        cell4_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 4 Voltage')
-        cell4_voltage_layout.addWidget(cell_voltage_label, 0, 0)
-        self.values['cell4_voltage'] = PyQt6.QtWidgets.QLabel()
-        cell4_voltage_layout.addWidget(self.values['cell4_voltage'], 1, 0)
-
-        cell4_module.addLayout(cell4_voltage_layout, 0, 1)
-
-        # Current #
-        cell4_current_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 4 Current')
-        cell4_current_layout.addWidget(cell_current_label, 0, 0)
-        self.values['cell4_current'] = PyQt6.QtWidgets.QLabel()
-        cell4_current_layout.addWidget(self.values['cell4_current'], 1, 0)
-
-        cell4_module.addLayout(cell4_current_layout, 0, 2)
-
-        battery_module.addLayout(cell4_module, 3, 0)
-
-        ## Cell 5 ##
-        cell5_module = PyQt6.QtWidgets.QGridLayout()
-
-        # Temperature #
-        cell5_temperature_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 5 Temperature')
-        cell5_temperature_layout.addWidget(cell_temperature_label, 0, 0)
-        self.values['cell5_temperature'] = PyQt6.QtWidgets.QLabel()
-        cell5_temperature_layout.addWidget(self.values['cell5_temperature'], 1, 0)
-
-        cell5_module.addLayout(cell5_temperature_layout, 0, 0)
-
-        # Voltage #
-        cell5_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 5 Voltage')
-        cell5_voltage_layout.addWidget(cell_voltage_label, 0, 0)
-        self.values['cell5_voltage'] = PyQt6.QtWidgets.QLabel()
-        cell5_voltage_layout.addWidget(self.values['cell5_voltage'], 1, 0)
-
-        cell5_module.addLayout(cell5_voltage_layout, 0, 1)
-
-        # Current #
-        cell5_current_layout = PyQt6.QtWidgets.QGridLayout()
-        cell_current_label = PyQt6.QtWidgets.QLabel('Cell 5 Current')
-        cell5_current_layout.addWidget(cell_current_label, 0, 0)
-        self.values['cell5_current'] = PyQt6.QtWidgets.QLabel()
-        cell5_current_layout.addWidget(self.values['cell5_current'], 1, 0)
-
-        cell5_module.addLayout(cell5_current_layout, 0, 2)
-
-        battery_module.addLayout(cell5_module, 4, 0)
-
-        ## Cell Stats ##
-        cell_stats_module = PyQt6.QtWidgets.QGridLayout()
-
-        # Lowest Voltage #
-        lowest_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        lowest_voltage_label = PyQt6.QtWidgets.QLabel('Lowest Voltage')
-        lowest_voltage_layout.addWidget(lowest_voltage_label, 0, 0)
-        self.values['lowest_voltage'] = PyQt6.QtWidgets.QLabel()
-        lowest_voltage_layout.addWidget(self.values['lowest_voltage'], 1, 0)
-
-        cell_stats_module.addLayout(lowest_voltage_layout, 0, 0)
-
-        # Average Voltage #
-        average_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        average_voltage_label = PyQt6.QtWidgets.QLabel('Average Voltage')
-        average_voltage_layout.addWidget(average_voltage_label, 0, 0)
-        self.values['average_voltage'] = PyQt6.QtWidgets.QLabel()
-        average_voltage_layout.addWidget(self.values['average_voltage'], 1, 0)
-
-        cell_stats_module.addLayout(average_voltage_layout, 0, 1)
-
-        # Highest Voltage #
-        highest_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-        highest_voltage_label = PyQt6.QtWidgets.QLabel('Highest Voltage')
-        highest_voltage_layout.addWidget(highest_voltage_label, 0, 0)
-        self.values['highest_voltage'] = PyQt6.QtWidgets.QLabel()
-        highest_voltage_layout.addWidget(self.values['highest_voltage'], 1, 0)
-
-        cell_stats_module.addLayout(highest_voltage_layout, 0, 2)
-
-        battery_module.addLayout(cell_stats_module, 5, 0)
-
-        self.layout.addLayout(battery_module, 0, 2, 2, 1)
-
-
-        ### Global ###
         self.frame.setLayout(self.layout)
         self.window.setCentralWidget(self.frame) 
 
@@ -289,10 +40,283 @@ class DashboardGUI:
     
     def edit_widget(self, key, label):
         self.values[key].setText(label)
+
+    class SpeedModule:
         
+        def __init__(self, values):
+            ## Speed ##
+            self.speed_module = PyQt6.QtWidgets.QGridLayout()
+
+            # MPH #
+            mph_layout = PyQt6.QtWidgets.QGridLayout()
+            mph_label = PyQt6.QtWidgets.QLabel('MPH')
+            mph_layout.addWidget(mph_label, 0, 0)
+            values['mph'] = PyQt6.QtWidgets.QLabel()
+            mph_layout.addWidget(values['mph'], 1, 0)
+
+            self.speed_module.addLayout(mph_layout, 0, 0)
+
+            # Rotations per minute #
+            rpm_layout = PyQt6.QtWidgets.QGridLayout()
+            rpm_label = PyQt6.QtWidgets.QLabel('RPM')
+            rpm_layout.addWidget(rpm_label, 0, 0)
+            values['rpm'] = PyQt6.QtWidgets.QLabel()
+            rpm_layout.addWidget(values['rpm'], 1, 0)
+            
+            self.speed_module.addLayout(rpm_layout, 1, 0)
+
+            # Knots #
+            knots_layout = PyQt6.QtWidgets.QGridLayout()
+            knots_label = PyQt6.QtWidgets.QLabel('Knots')
+            knots_layout.addWidget(knots_label, 0, 0)
+            values['knots'] = PyQt6.QtWidgets.QLabel()
+            knots_layout.addWidget(values['knots'], 1, 0)
+
+            self.speed_module.addLayout(knots_layout, 2, 0)
+        
+        def get_module(self):
+            return self.speed_module
+
+    class ControllerModule:
+
+        def __init__(self, values):
+            ## Controller ##
+            self.controller_module = PyQt6.QtWidgets.QGridLayout()
+            
+            # Temperature #
+            controller_layout = PyQt6.QtWidgets.QGridLayout()
+            controller_label = PyQt6.QtWidgets.QLabel('Controller Temperature')
+            controller_layout.addWidget(controller_label, 0, 0)
+            values['controller_temperature'] = PyQt6.QtWidgets.QLabel()
+            controller_layout.addWidget(values['controller_temperature'], 1, 0)
+
+            self.controller_module.addLayout(controller_layout, 0, 0)
+        
+        def get_module(self):
+            return self.controller_module
+
+    class MotorModule:
+
+        def __init__(self, values):
+            ## Motor ##
+            self.motor_module = PyQt6.QtWidgets.QGridLayout()
+            
+            # Temperature #
+            motor_layout = PyQt6.QtWidgets.QGridLayout()
+            motor_label = PyQt6.QtWidgets.QLabel('Motor Temperature')
+            motor_layout.addWidget(motor_label, 0, 0)
+            values['motor_temperature'] = PyQt6.QtWidgets.QLabel()
+            motor_layout.addWidget(values['motor_temperature'], 1, 0)
+
+            self.motor_module.addLayout(motor_layout, 0, 0)
+
+        def get_module(self):
+            return self.motor_module        
+
+    class BatteryModule:
+        
+        def __init__(self, values):
+            ### Battery ###
+            self.battery_module = PyQt6.QtWidgets.QGridLayout()
+            
+            ## Cell 1 ##
+            cell1_module = PyQt6.QtWidgets.QGridLayout()
+
+            # Temperature #
+            cell1_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 1 Temperature')
+            cell1_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+            values['cell1_temperature'] = PyQt6.QtWidgets.QLabel()
+            cell1_temperature_layout.addWidget(values['cell1_temperature'], 1, 0)
+
+            cell1_module.addLayout(cell1_temperature_layout, 0, 0)
+
+            # Voltage #
+            cell1_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 1 Voltage')
+            cell1_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+            values['cell1_voltage'] = PyQt6.QtWidgets.QLabel()
+            cell1_voltage_layout.addWidget(values['cell1_voltage'], 1, 0)
+
+            cell1_module.addLayout(cell1_voltage_layout, 0, 1)
+
+            # Current #
+            cell1_current_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_current_label = PyQt6.QtWidgets.QLabel('Cell 1 Current')
+            cell1_current_layout.addWidget(cell_current_label, 0, 0)
+            values['cell1_current'] = PyQt6.QtWidgets.QLabel()
+            cell1_current_layout.addWidget(values['cell1_current'], 1, 0)
+
+            cell1_module.addLayout(cell1_current_layout, 0, 2)
+
+            self.battery_module.addLayout(cell1_module, 0, 0)
+
+            ## Cell 2 ##
+            cell2_module = PyQt6.QtWidgets.QGridLayout()
+
+            # Temperature #
+            cell2_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 2 Temperature')
+            cell2_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+            values['cell2_temperature'] = PyQt6.QtWidgets.QLabel()
+            cell2_temperature_layout.addWidget(values['cell2_temperature'], 1, 0)
+
+            cell2_module.addLayout(cell2_temperature_layout, 0, 0)
+
+            # Voltage #
+            cell2_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 2 Voltage')
+            cell2_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+            values['cell2_voltage'] = PyQt6.QtWidgets.QLabel()
+            cell2_voltage_layout.addWidget(values['cell2_voltage'], 1, 0)
+
+            cell2_module.addLayout(cell2_voltage_layout, 0, 1)
+
+            # Current #
+            cell2_current_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_current_label = PyQt6.QtWidgets.QLabel('Cell 2 Current')
+            cell2_current_layout.addWidget(cell_current_label, 0, 0)
+            values['cell2_current'] = PyQt6.QtWidgets.QLabel()
+            cell2_current_layout.addWidget(values['cell2_current'], 1, 0)
+
+            cell2_module.addLayout(cell2_current_layout, 0, 2)
+
+            self.battery_module.addLayout(cell2_module, 1, 0)
+
+            ## Cell 3 ##
+            cell3_module = PyQt6.QtWidgets.QGridLayout()
+
+            # Temperature #
+            cell3_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 3 Temperature')
+            cell3_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+            values['cell3_temperature'] = PyQt6.QtWidgets.QLabel()
+            cell3_temperature_layout.addWidget(values['cell3_temperature'], 1, 0)
+
+            cell3_module.addLayout(cell3_temperature_layout, 0, 0)
+
+            # Voltage #
+            cell3_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 3 Voltage')
+            cell3_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+            values['cell3_voltage'] = PyQt6.QtWidgets.QLabel()
+            cell3_voltage_layout.addWidget(values['cell3_voltage'], 1, 0)
+
+            cell3_module.addLayout(cell3_voltage_layout, 0, 1)
+
+            # Current #
+            cell3_current_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_current_label = PyQt6.QtWidgets.QLabel('Cell 3 Current')
+            cell3_current_layout.addWidget(cell_current_label, 0, 0)
+            values['cell3_current'] = PyQt6.QtWidgets.QLabel()
+            cell3_current_layout.addWidget(values['cell3_current'], 1, 0)
+
+            cell3_module.addLayout(cell3_current_layout, 0, 2)
+
+            self.battery_module.addLayout(cell3_module, 2, 0)
+
+            ## Cell 4 ##
+            cell4_module = PyQt6.QtWidgets.QGridLayout()
+
+            # Temperature #
+            cell4_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 4 Temperature')
+            cell4_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+            values['cell4_temperature'] = PyQt6.QtWidgets.QLabel()
+            cell4_temperature_layout.addWidget(values['cell4_temperature'], 1, 0)
+
+            cell4_module.addLayout(cell4_temperature_layout, 0, 0)
+
+            # Voltage #
+            cell4_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 4 Voltage')
+            cell4_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+            values['cell4_voltage'] = PyQt6.QtWidgets.QLabel()
+            cell4_voltage_layout.addWidget(values['cell4_voltage'], 1, 0)
+
+            cell4_module.addLayout(cell4_voltage_layout, 0, 1)
+
+            # Current #
+            cell4_current_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_current_label = PyQt6.QtWidgets.QLabel('Cell 4 Current')
+            cell4_current_layout.addWidget(cell_current_label, 0, 0)
+            values['cell4_current'] = PyQt6.QtWidgets.QLabel()
+            cell4_current_layout.addWidget(values['cell4_current'], 1, 0)
+
+            cell4_module.addLayout(cell4_current_layout, 0, 2)
+
+            self.battery_module.addLayout(cell4_module, 3, 0)
+
+            ## Cell 5 ##
+            cell5_module = PyQt6.QtWidgets.QGridLayout()
+
+            # Temperature #
+            cell5_temperature_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 5 Temperature')
+            cell5_temperature_layout.addWidget(cell_temperature_label, 0, 0)
+            values['cell5_temperature'] = PyQt6.QtWidgets.QLabel()
+            cell5_temperature_layout.addWidget(values['cell5_temperature'], 1, 0)
+
+            cell5_module.addLayout(cell5_temperature_layout, 0, 0)
+
+            # Voltage #
+            cell5_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 5 Voltage')
+            cell5_voltage_layout.addWidget(cell_voltage_label, 0, 0)
+            values['cell5_voltage'] = PyQt6.QtWidgets.QLabel()
+            cell5_voltage_layout.addWidget(values['cell5_voltage'], 1, 0)
+
+            cell5_module.addLayout(cell5_voltage_layout, 0, 1)
+
+            # Current #
+            cell5_current_layout = PyQt6.QtWidgets.QGridLayout()
+            cell_current_label = PyQt6.QtWidgets.QLabel('Cell 5 Current')
+            cell5_current_layout.addWidget(cell_current_label, 0, 0)
+            values['cell5_current'] = PyQt6.QtWidgets.QLabel()
+            cell5_current_layout.addWidget(values['cell5_current'], 1, 0)
+
+            cell5_module.addLayout(cell5_current_layout, 0, 2)
+
+            self.battery_module.addLayout(cell5_module, 4, 0)
+
+            ## Cell Stats ##
+            cell_stats_module = PyQt6.QtWidgets.QGridLayout()
+
+            # Lowest Voltage #
+            lowest_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            lowest_voltage_label = PyQt6.QtWidgets.QLabel('Lowest Voltage')
+            lowest_voltage_layout.addWidget(lowest_voltage_label, 0, 0)
+            values['lowest_voltage'] = PyQt6.QtWidgets.QLabel()
+            lowest_voltage_layout.addWidget(values['lowest_voltage'], 1, 0)
+
+            cell_stats_module.addLayout(lowest_voltage_layout, 0, 0)
+
+            # Average Voltage #
+            average_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            average_voltage_label = PyQt6.QtWidgets.QLabel('Average Voltage')
+            average_voltage_layout.addWidget(average_voltage_label, 0, 0)
+            values['average_voltage'] = PyQt6.QtWidgets.QLabel()
+            average_voltage_layout.addWidget(values['average_voltage'], 1, 0)
+
+            cell_stats_module.addLayout(average_voltage_layout, 0, 1)
+
+            # Highest Voltage #
+            highest_voltage_layout = PyQt6.QtWidgets.QGridLayout()
+            highest_voltage_label = PyQt6.QtWidgets.QLabel('Highest Voltage')
+            highest_voltage_layout.addWidget(highest_voltage_label, 0, 0)
+            values['highest_voltage'] = PyQt6.QtWidgets.QLabel()
+            highest_voltage_layout.addWidget(values['highest_voltage'], 1, 0)
+
+            cell_stats_module.addLayout(highest_voltage_layout, 0, 2)
+
+            self.battery_module.addLayout(cell_stats_module, 5, 0)
+        
+        def get_module(self):
+            return self.battery_module
+
 def main():
     app = PyQt6.QtWidgets.QApplication(sys.argv)
-    gui = DashboardGUI()
+    gui = DashboardGUI({})
     gui.display()
 
     def update_labels():
