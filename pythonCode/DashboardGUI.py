@@ -1,17 +1,14 @@
-import PyQt6
-import PyQt6.QtWidgets
-import PyQt6.QtCore
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
 import sys
-
-NUM_CELLS = 5
 
 class DashboardGUI:
 
-    def __init__(self, values, numCells):
-        self.window = PyQt6.QtWidgets.QMainWindow()
-        self.frame = PyQt6.QtWidgets.QFrame()
-        self.layout = PyQt6.QtWidgets.QGridLayout()
-        self.update_values(values)
+    def __init__(self, numCells):
+        self.window = QMainWindow()
+        self.frame = QFrame()
+        self.layout = QGridLayout()
         self.speed_module = self.SpeedModule()
         self.controller_module = self.ControllerModule()
         self.motor_module = self.MotorModule()
@@ -19,49 +16,50 @@ class DashboardGUI:
         self.setup_gui()
 
     def setup_gui(self):
+        self.window.setStyleSheet('background-color: black;')
+        self.window.setWindowTitle('Dashboard GUI')
+
         self.layout.addLayout(self.speed_module.get_module(), 0, 0, 2, 1)
         self.layout.addLayout(self.controller_module.get_module(), 0, 1)
         self.layout.addLayout(self.motor_module.get_module(), 1, 1)
         self.layout.addLayout(self.battery_module.get_module(), 0, 2, 2, 1)
+
         self.frame.setLayout(self.layout)
+
         self.window.setCentralWidget(self.frame) 
 
     def display(self):
         self.window.show()
-    
-    def update_values(self, values):
-        
 
     class SpeedModule:
-        
-        def __init__(self, values):
+        def __init__(self):
             ## Speed ##
-            self.speed_module = PyQt6.QtWidgets.QGridLayout()
+            self.speed_module = QGridLayout()
 
             # MPH #
-            mph_layout = PyQt6.QtWidgets.QGridLayout()
-            mph_label = PyQt6.QtWidgets.QLabel('MPH')
+            mph_layout = QGridLayout()
+            mph_label = QLabel('MPH')
             mph_layout.addWidget(mph_label, 0, 0)
-            values['mph'] = PyQt6.QtWidgets.QLabel()
-            mph_layout.addWidget(values['mph'], 1, 0)
+            self.mph_value = QLabel()
+            mph_layout.addWidget(self.mph_value, 1, 0)
 
             self.speed_module.addLayout(mph_layout, 0, 0)
 
             # Rotations per minute #
-            rpm_layout = PyQt6.QtWidgets.QGridLayout()
-            rpm_label = PyQt6.QtWidgets.QLabel('RPM')
+            rpm_layout = QGridLayout()
+            rpm_label = QLabel('RPM')
             rpm_layout.addWidget(rpm_label, 0, 0)
-            values['rpm'] = PyQt6.QtWidgets.QLabel()
-            rpm_layout.addWidget(values['rpm'], 1, 0)
+            self.rpm_value = QLabel()
+            rpm_layout.addWidget(self.rpm_value, 1, 0)
             
             self.speed_module.addLayout(rpm_layout, 1, 0)
 
             # Knots #
-            knots_layout = PyQt6.QtWidgets.QGridLayout()
-            knots_label = PyQt6.QtWidgets.QLabel('Knots')
+            knots_layout = QGridLayout()
+            knots_label = QLabel('Knots')
             knots_layout.addWidget(knots_label, 0, 0)
-            values['knots'] = PyQt6.QtWidgets.QLabel()
-            knots_layout.addWidget(values['knots'], 1, 0)
+            self.knots_value = QLabel()
+            knots_layout.addWidget(self.knots_value, 1, 0)
 
             self.speed_module.addLayout(knots_layout, 2, 0)
         
@@ -70,115 +68,97 @@ class DashboardGUI:
 
     class ControllerModule:
 
-        def __init__(self, values):
+        def __init__(self):
             ## Controller ##
-            self.controller_module = PyQt6.QtWidgets.QGridLayout()
-            
-            # Temperature #
-            controller_layout = PyQt6.QtWidgets.QGridLayout()
-            controller_label = PyQt6.QtWidgets.QLabel('Controller Temperature')
-            controller_layout.addWidget(controller_label, 0, 0)
-            values['controller_temperature'] = PyQt6.QtWidgets.QLabel()
-            controller_layout.addWidget(values['controller_temperature'], 1, 0)
+            self.controller_module = QGridLayout()
 
-            self.controller_module.addLayout(controller_layout, 0, 0)
+            # Temperature #
+            temperature_layout = QGridLayout()
+            temperature_label = QLabel('Controller Temperature')
+            temperature_layout.addWidget(temperature_label, 0, 0)
+            self.temperature_value = QLabel()
+            temperature_layout.addWidget(self.temperature_value, 1, 0)
+
+            self.controller_module.addLayout(temperature_layout, 0, 0)
         
         def get_module(self):
             return self.controller_module
 
     class MotorModule:
 
-        def __init__(self, values):
+        def __init__(self):
             ## Motor ##
-            self.motor_module = PyQt6.QtWidgets.QGridLayout()
+            self.motor_module = QGridLayout()
             
             # Temperature #
-            motor_layout = PyQt6.QtWidgets.QGridLayout()
-            motor_label = PyQt6.QtWidgets.QLabel('Motor Temperature')
-            motor_layout.addWidget(motor_label, 0, 0)
-            values['motor_temperature'] = PyQt6.QtWidgets.QLabel()
-            motor_layout.addWidget(values['motor_temperature'], 1, 0)
+            temperature_layout = QGridLayout()
+            temperature_label = QLabel('Motor Temperature')
+            temperature_layout.addWidget(temperature_label, 0, 0)
+            self.temperature_value = QLabel()
+            temperature_layout.addWidget(self.temperature_value, 1, 0)
 
-            self.motor_module.addLayout(motor_layout, 0, 0)
+            self.motor_module.addLayout(temperature_layout, 0, 0)
 
         def get_module(self):
             return self.motor_module        
 
     class BatteryModule:
         
-        def __init__(self, values):
+        def __init__(self, numCells):
             ### Battery ###
-            self.battery_module = PyQt6.QtWidgets.QGridLayout()
-            self.cell1_module = self.CellModule(values).get_module()
-            self.cell2_module = self.CellModule(values).get_module()
-            self.cell3_module = self.CellModule(values).get_module()
-            self.cell4_module = self.CellModule(values).get_module()
-            self.cell5_module = self.CellModule(values).get_module()
-            self.cell_stats_module = self.CellModule(values).get_module()
+            self.battery_module = QGridLayout()
+            self.cell_modules = []
+            for cell in range(numCells):
+                self.cell_modules.append(self.CellModule())
             self.setup_module()
         
         def setup_module(self):
-            self.battery_module.addLayout(self.cell1_module, 0, 0)
-            self.battery_module.addLayout(self.cell2_module, 1, 0)
-            self.battery_module.addLayout(self.cell3_module, 2, 0)
-            self.battery_module.addLayout(self.cell4_module, 3, 0)
-            self.battery_module.addLayout(self.cell5_module, 4, 0)
-            self.battery_module.addLayout(self.cell_stats_module, 5, 0)
+            for cell in range(len(self.cell_modules)):
+                self.battery_module.addLayout(self.cell_modules[cell].get_module(), cell, 0)
         
         def get_module(self):
             return self.battery_module
 
         class CellModule:
 
-            def __init__(self, values):
+            def __init__(self):
                 ## Cell ##
-                self.cell_module = PyQt6.QtWidgets.QGridLayout()
+                self.cell_module = QGridLayout()
 
                 # Temperature #
-                cell_temperature_layout = PyQt6.QtWidgets.QGridLayout()
-                cell_temperature_label = PyQt6.QtWidgets.QLabel('Cell 1 Temperature')
-                cell_temperature_layout.addWidget(cell_temperature_label, 0, 0)
-                values['cell_temperature'] = PyQt6.QtWidgets.QLabel()
-                cell_temperature_layout.addWidget(values['cell_temperature'], 1, 0)
+                temperature_layout = QGridLayout()
+                temperature_label = QLabel('Cell Temperature')
+                temperature_layout.addWidget(temperature_label, 0, 0)
+                self.temperature_value = QLabel()
+                temperature_layout.addWidget(self.temperature_value, 1, 0)
 
-                self.cell_module.addLayout(cell_temperature_layout, 0, 0)
+                self.cell_module.addLayout(temperature_layout, 0, 0)
 
                 # Voltage #
-                cell_voltage_layout = PyQt6.QtWidgets.QGridLayout()
-                cell_voltage_label = PyQt6.QtWidgets.QLabel('Cell 1 Voltage')
-                cell_voltage_layout.addWidget(cell_voltage_label, 0, 0)
-                values['cell_voltage'] = PyQt6.QtWidgets.QLabel()
-                cell_voltage_layout.addWidget(values['cell_voltage'], 1, 0)
+                voltage_layout = QGridLayout()
+                voltage_label = QLabel('Cell Voltage')
+                voltage_layout.addWidget(voltage_label, 0, 0)
+                self.voltage_value = QLabel()
+                voltage_layout.addWidget(self.voltage_value, 1, 0)
 
-                self.cell_module.addLayout(cell_voltage_layout, 0, 1)
+                self.cell_module.addLayout(voltage_layout, 0, 1)
 
                 # Current #
-                cell_current_layout = PyQt6.QtWidgets.QGridLayout()
-                cell_current_label = PyQt6.QtWidgets.QLabel('Cell  Current')
-                cell_current_layout.addWidget(cell_current_label, 0, 0)
-                values['cell_current'] = PyQt6.QtWidgets.QLabel()
-                cell_current_layout.addWidget(values['cell_current'], 1, 0)
+                current_layout = QGridLayout()
+                current_label = QLabel('Cell  Current')
+                current_layout.addWidget(current_label, 0, 0)
+                self.current_value = QLabel()
+                current_layout.addWidget(self.current_value, 1, 0)
 
-                self.cell_module.addLayout(cell_current_layout, 0, 2)
+                self.cell_module.addLayout(current_layout, 0, 2)
 
             def get_module(self):
                 return self.cell_module
 
 def main():
-    values = {}
-    values['mph'] = 0
-    values['rpm'] = 0
-    values['knots'] = 0
-    values['controller_temperature'] = 0
-    values['motor_temperature'] = 0
-    for i in range(NUM_CELLS):
-        values['cell' + str(i)] = {}
-        values['cell' + str(i)]['temperature'] = 0
-        values['cell' + str(i)]['voltage'] = 0
-        values['cell' + str(i)]['current'] = 0
-
-    app = PyQt6.QtWidgets.QApplication(sys.argv)
-    gui = DashboardGUI(values, NUM_CELLS)
+    NUM_CELLS = 5
+    app = QApplication(sys.argv)
+    gui = DashboardGUI(NUM_CELLS)
     gui.display()
 
     sys.exit(app.exec())
