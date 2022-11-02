@@ -16,7 +16,7 @@ class DashboardGUI:
         self.setup_gui()
 
     def setup_gui(self):
-        self.window.setStyleSheet('background-color: black;')
+        self.window.setStyleSheet('background-color: white;')
         self.window.setWindowTitle('Dashboard GUI')
 
         self.layout.addLayout(self.speed_module.get_module(), 0, 0, 2, 1)
@@ -33,36 +33,34 @@ class DashboardGUI:
 
     class SpeedModule:
         def __init__(self):
-            ## Speed ##
             self.speed_module = QGridLayout()
-
-            # MPH #
+            self.mph_value = QLabel()
+            self.rpm_value = QLabel()
+            self.knots_value = QLabel()
+            self.setup_module()
+        
+        def setup_module(self):
             mph_layout = QGridLayout()
             mph_label = QLabel('MPH')
             mph_layout.addWidget(mph_label, 0, 0)
-            self.mph_value = QLabel()
             mph_layout.addWidget(self.mph_value, 1, 0)
 
             self.speed_module.addLayout(mph_layout, 0, 0)
 
-            # Rotations per minute #
             rpm_layout = QGridLayout()
             rpm_label = QLabel('RPM')
             rpm_layout.addWidget(rpm_label, 0, 0)
-            self.rpm_value = QLabel()
             rpm_layout.addWidget(self.rpm_value, 1, 0)
             
             self.speed_module.addLayout(rpm_layout, 1, 0)
 
-            # Knots #
             knots_layout = QGridLayout()
             knots_label = QLabel('Knots')
             knots_layout.addWidget(knots_label, 0, 0)
-            self.knots_value = QLabel()
             knots_layout.addWidget(self.knots_value, 1, 0)
 
             self.speed_module.addLayout(knots_layout, 2, 0)
-        
+
         def get_module(self):
             return self.speed_module
 
