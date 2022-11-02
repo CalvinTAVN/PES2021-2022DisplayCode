@@ -9,14 +9,13 @@ class DashboardGUI:
         self.window = QMainWindow()
         self.frame = QFrame()
         self.layout = QGridLayout()
-        self.speed_module = self.SpeedModule()
+        self.speed_module = self.SpeedModule(self)
         self.controller_module = self.ControllerModule()
         self.motor_module = self.MotorModule()
         self.battery_module = self.BatteryModule(numCells)
         self.setup_gui()
 
     def setup_gui(self):
-        self.window.setStyleSheet('background-color: white;')
         self.window.setWindowTitle('Dashboard GUI')
 
         self.layout.addLayout(self.speed_module.get_module(), 0, 0, 2, 1)
@@ -30,9 +29,15 @@ class DashboardGUI:
 
     def display(self):
         self.window.show()
+    
+    def setColor(self, widget, colorRole, color):
+        palette = widget.palette()
+        palette.setColor(colorRole, color)
+        widget.setPalette(palette)
 
     class SpeedModule:
-        def __init__(self):
+        def __init__(self, gui):
+            self.gui = gui
             self.speed_module = QGridLayout()
             self.mph_value = QLabel()
             self.rpm_value = QLabel()
@@ -40,26 +45,48 @@ class DashboardGUI:
             self.setup_module()
         
         def setup_module(self):
-            mph_layout = QGridLayout()
+            mph_container = QWidget()
+            mph_container.setAutoFillBackground(True)
+            self.gui.setColor(mph_container, mph_container.backgroundRole(), QColor(0, 0, 0))
+
+            mph_layout = QGridLayout(mph_container)
+
             mph_label = QLabel('MPH')
+            mph_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(mph_label, mph_label.foregroundRole(), QColor(255, 255, 255))
             mph_layout.addWidget(mph_label, 0, 0)
+
             mph_layout.addWidget(self.mph_value, 1, 0)
 
-            self.speed_module.addLayout(mph_layout, 0, 0)
+            self.speed_module.addWidget(mph_container, 0, 0, 1, 2)
 
-            rpm_layout = QGridLayout()
+            rpm_container = QWidget()
+            rpm_container.setAutoFillBackground(True)
+            self.gui.setColor(rpm_container, rpm_container.backgroundRole(), QColor(0, 0, 0))
+
+            rpm_layout = QGridLayout(rpm_container)
             rpm_label = QLabel('RPM')
+            rpm_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(rpm_label, rpm_label.foregroundRole(), QColor(255, 255, 255))
             rpm_layout.addWidget(rpm_label, 0, 0)
+
             rpm_layout.addWidget(self.rpm_value, 1, 0)
             
-            self.speed_module.addLayout(rpm_layout, 1, 0)
+            self.speed_module.addWidget(rpm_container, 1, 0)
+            
+            knots_container = QWidget()
+            knots_container.setAutoFillBackground(True)
+            self.gui.setColor(knots_container, knots_container.backgroundRole(), QColor(0, 0, 0))
 
-            knots_layout = QGridLayout()
+            knots_layout = QGridLayout(knots_container)
             knots_label = QLabel('Knots')
+            knots_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(knots_label, knots_label.foregroundRole(), QColor(255, 255, 255))
             knots_layout.addWidget(knots_label, 0, 0)
+
             knots_layout.addWidget(self.knots_value, 1, 0)
 
-            self.speed_module.addLayout(knots_layout, 2, 0)
+            self.speed_module.addWidget(knots_container, 1, 1)
 
         def get_module(self):
             return self.speed_module
