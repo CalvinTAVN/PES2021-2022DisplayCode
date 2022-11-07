@@ -17,11 +17,14 @@ class DashboardGUI:
 
     def setup_gui(self):
         self.window.setWindowTitle('Dashboard GUI')
+        
+        self.layout.setRowStretch(0, 10)
+        self.layout.setRowStretch(1, 2)
 
         self.layout.addLayout(self.speed_module.get_module(), 0, 0)
+        self.layout.addLayout(self.battery_module.get_module(), 0, 1)
         self.layout.addLayout(self.controller_module.get_module(), 1, 0)
         self.layout.addLayout(self.motor_module.get_module(), 1, 1)
-        self.layout.addLayout(self.battery_module.get_module(), 0, 1)
 
         self.frame.setLayout(self.layout)
 
@@ -45,6 +48,9 @@ class DashboardGUI:
             self.setup_module()
         
         def setup_module(self):
+            self.speed_module.setRowStretch(0, 8)
+            self.speed_module.setRowStretch(1, 4)
+
             mph_container = QWidget()
             mph_container.setAutoFillBackground(True)
             self.gui.setColor(mph_container, mph_container.backgroundRole(), QColor(0, 0, 0))
@@ -150,12 +156,64 @@ class DashboardGUI:
             self.numCells = numCells
             self.battery_module = QGridLayout()
             self.cell_modules = []
+            self.low_voltage_value = QLabel()
+            self.average_voltage_value = QLabel()
+            self.high_voltage_value = QLabel()
             self.setup_module()
         
         def setup_module(self):
             for cell in range(self.numCells):
                 self.cell_modules.append(self.CellModule(self.gui))
                 self.battery_module.addLayout(self.cell_modules[cell].get_module(), cell, 0)
+
+            cell_stats_module = QGridLayout()
+
+            low_voltage_container = QWidget()
+            low_voltage_container.setAutoFillBackground(True)
+            self.gui.setColor(low_voltage_container, low_voltage_container.backgroundRole(), QColor(0, 0, 0))
+
+            low_voltage_layout = QGridLayout(low_voltage_container)
+
+            low_voltage_label = QLabel('Low Voltage')
+            low_voltage_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(low_voltage_label, low_voltage_label.foregroundRole(), QColor(255, 255, 255))
+            low_voltage_layout.addWidget(low_voltage_label, 0, 0)
+
+            low_voltage_layout.addWidget(self.low_voltage_value, 1, 0)
+
+            cell_stats_module.addWidget(low_voltage_container, 0, 0)
+
+            average_voltage_container = QWidget()
+            average_voltage_container.setAutoFillBackground(True)
+            self.gui.setColor(average_voltage_container, average_voltage_container.backgroundRole(), QColor(0, 0, 0))
+
+            average_voltage_layout = QGridLayout(average_voltage_container)
+
+            average_voltage_label = QLabel('Average Voltage')
+            average_voltage_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(average_voltage_label, average_voltage_label.foregroundRole(), QColor(255, 255, 255))
+            average_voltage_layout.addWidget(average_voltage_label, 0, 0)
+
+            average_voltage_layout.addWidget(self.average_voltage_value, 1, 0)
+
+            cell_stats_module.addWidget(average_voltage_container, 0, 1)
+
+            high_voltage_container = QWidget()
+            high_voltage_container.setAutoFillBackground(True)
+            self.gui.setColor(high_voltage_container, high_voltage_container.backgroundRole(), QColor(0, 0, 0))
+
+            high_voltage_layout = QGridLayout(high_voltage_container)
+
+            high_voltage_label = QLabel('High Voltage')
+            high_voltage_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(high_voltage_label, high_voltage_label.foregroundRole(), QColor(255, 255, 255))
+            high_voltage_layout.addWidget(high_voltage_label, 0, 0)
+
+            high_voltage_layout.addWidget(self.high_voltage_value, 1, 0)
+
+            cell_stats_module.addWidget(high_voltage_container, 0, 2)
+
+            self.battery_module.addLayout(cell_stats_module, self.numCells, 0)
         
         def get_module(self):
             return self.battery_module
@@ -176,6 +234,8 @@ class DashboardGUI:
                 self.gui.setColor(cell_container, cell_container.backgroundRole(), QColor(0, 0, 0))
 
                 cell_layout = QGridLayout(cell_container)
+
+                cell_layout.setRowMinimumHeight(0, 5)
 
                 temperature_container = QWidget()
                 temperature_container.setAutoFillBackground(True)
