@@ -10,18 +10,18 @@ class DashboardGUI:
         self.frame = QFrame()
         self.layout = QGridLayout()
         self.speed_module = self.SpeedModule(self)
-        self.controller_module = self.ControllerModule()
-        self.motor_module = self.MotorModule()
-        self.battery_module = self.BatteryModule(numCells)
+        self.controller_module = self.ControllerModule(self)
+        self.motor_module = self.MotorModule(self)
+        self.battery_module = self.BatteryModule(self, numCells)
         self.setup_gui()
 
     def setup_gui(self):
         self.window.setWindowTitle('Dashboard GUI')
 
-        self.layout.addLayout(self.speed_module.get_module(), 0, 0, 2, 1)
-        self.layout.addLayout(self.controller_module.get_module(), 0, 1)
+        self.layout.addLayout(self.speed_module.get_module(), 0, 0)
+        self.layout.addLayout(self.controller_module.get_module(), 1, 0)
         self.layout.addLayout(self.motor_module.get_module(), 1, 1)
-        self.layout.addLayout(self.battery_module.get_module(), 0, 2, 2, 1)
+        self.layout.addLayout(self.battery_module.get_module(), 0, 1)
 
         self.frame.setLayout(self.layout)
 
@@ -93,89 +93,109 @@ class DashboardGUI:
 
     class ControllerModule:
 
-        def __init__(self):
-            ## Controller ##
+        def __init__(self, gui):
+            self.gui = gui
             self.controller_module = QGridLayout()
-
-            # Temperature #
-            temperature_layout = QGridLayout()
-            temperature_label = QLabel('Controller Temperature')
-            temperature_layout.addWidget(temperature_label, 0, 0)
             self.temperature_value = QLabel()
+            self.setup_module()
+        
+        def setup_module(self):
+            temperature_container = QWidget()
+            temperature_container.setAutoFillBackground(True)
+            self.gui.setColor(temperature_container, temperature_container.backgroundRole(), QColor(0, 0, 0))
+
+            temperature_layout = QGridLayout(temperature_container)
+            temperature_label = QLabel('Controller Temperature')
+            temperature_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(temperature_label, temperature_label.foregroundRole(), QColor(255, 255, 255))
+            temperature_layout.addWidget(temperature_label, 0, 0)
+
             temperature_layout.addWidget(self.temperature_value, 1, 0)
 
-            self.controller_module.addLayout(temperature_layout, 0, 0)
-        
+            self.controller_module.addWidget(temperature_container, 0, 0)
+
         def get_module(self):
             return self.controller_module
 
     class MotorModule:
 
-        def __init__(self):
-            ## Motor ##
+        def __init__(self, gui):
+            self.gui = gui
             self.motor_module = QGridLayout()
-            
-            # Temperature #
-            temperature_layout = QGridLayout()
-            temperature_label = QLabel('Motor Temperature')
-            temperature_layout.addWidget(temperature_label, 0, 0)
             self.temperature_value = QLabel()
+            self.setup_module()
+        
+        def setup_module(self):
+            temperature_container = QWidget()
+            temperature_container.setAutoFillBackground(True)
+            self.gui.setColor(temperature_container, temperature_container.backgroundRole(), QColor(0, 0, 0))
+
+            temperature_layout = QGridLayout(temperature_container)
+            temperature_label = QLabel('Motor Temperature')
+            temperature_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(temperature_label, temperature_label.foregroundRole(), QColor(255, 255, 255))
+            temperature_layout.addWidget(temperature_label, 0, 0)
+
             temperature_layout.addWidget(self.temperature_value, 1, 0)
 
-            self.motor_module.addLayout(temperature_layout, 0, 0)
+            self.motor_module.addWidget(temperature_container, 0, 0)
 
         def get_module(self):
             return self.motor_module        
 
     class BatteryModule:
         
-        def __init__(self, numCells):
-            ### Battery ###
+        def __init__(self, gui, numCells):
+            self.gui = gui
+            self.numCells = numCells
             self.battery_module = QGridLayout()
             self.cell_modules = []
-            for cell in range(numCells):
-                self.cell_modules.append(self.CellModule())
             self.setup_module()
         
         def setup_module(self):
-            for cell in range(len(self.cell_modules)):
+            for cell in range(self.numCells):
+                self.cell_modules.append(self.CellModule(self.gui))
                 self.battery_module.addLayout(self.cell_modules[cell].get_module(), cell, 0)
         
         def get_module(self):
             return self.battery_module
 
         class CellModule:
-
-            def __init__(self):
-                ## Cell ##
+            
+            def __init__(self, gui):
+                self.gui = gui
                 self.cell_module = QGridLayout()
+                self.temperature_value = 0
+                self.voltage_value = 0
+                self.current_value = 0
+                self.setup_module()
 
-                # Temperature #
-                temperature_layout = QGridLayout()
-                temperature_label = QLabel('Cell Temperature')
-                temperature_layout.addWidget(temperature_label, 0, 0)
-                self.temperature_value = QLabel()
-                temperature_layout.addWidget(self.temperature_value, 1, 0)
+            def setup_module(self):
+                cell_container = QWidget()
+                cell_container.setAutoFillBackground(True)
+                self.gui.setColor(cell_container, cell_container.backgroundRole(), QColor(0, 0, 0))
 
-                self.cell_module.addLayout(temperature_layout, 0, 0)
+                cell_layout = QGridLayout(cell_container)
 
-                # Voltage #
-                voltage_layout = QGridLayout()
-                voltage_label = QLabel('Cell Voltage')
-                voltage_layout.addWidget(voltage_label, 0, 0)
-                self.voltage_value = QLabel()
-                voltage_layout.addWidget(self.voltage_value, 1, 0)
+                temperature_container = QWidget()
+                temperature_container.setAutoFillBackground(True)
+                self.gui.setColor(temperature_container, temperature_container.backgroundRole(), QColor(0, 255, 0))
 
-                self.cell_module.addLayout(voltage_layout, 0, 1)
+                cell_layout.addWidget(temperature_container, 0, 0)
 
-                # Current #
-                current_layout = QGridLayout()
-                current_label = QLabel('Cell  Current')
-                current_layout.addWidget(current_label, 0, 0)
-                self.current_value = QLabel()
-                current_layout.addWidget(self.current_value, 1, 0)
+                voltage_container = QWidget()
+                voltage_container.setAutoFillBackground(True)
+                self.gui.setColor(voltage_container, voltage_container.backgroundRole(), QColor(0, 255, 0))
 
-                self.cell_module.addLayout(current_layout, 0, 2)
+                cell_layout.addWidget(voltage_container, 0, 1)
+
+                current_container = QWidget()
+                current_container.setAutoFillBackground(True)
+                self.gui.setColor(current_container, current_container.backgroundRole(), QColor(0, 255, 0))
+
+                cell_layout.addWidget(current_container, 0, 2)
+
+                self.cell_module.addWidget(cell_container)
 
             def get_module(self):
                 return self.cell_module
