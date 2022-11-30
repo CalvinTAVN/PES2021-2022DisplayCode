@@ -5,14 +5,15 @@ import sys
 
 class DashboardGUI:
 
-    def __init__(self, numCells):
+    def __init__(self, args):
+        self.app = QApplication(args)
         self.window = QMainWindow()
         self.frame = QFrame()
         self.layout = QGridLayout()
         self.speed_module = self.SpeedModule(self)
         self.controller_module = self.ControllerModule(self)
         self.motor_module = self.MotorModule(self)
-        self.battery_module = self.BatteryModule(self, numCells)
+        self.battery_module = self.BatteryModule(self, numCells = 5)
         self.current_module = self.CurrentModule(self)
         self.setup_gui()
 
@@ -40,11 +41,12 @@ class DashboardGUI:
         self.window.resize(screen_size.width() // 2, screen_size.height() // 2)
         self.window.move(screen_size.center() - self.window.frameGeometry().center())
         self.window.show()
-    
-    def setColor(self, widget, colorRole, color):
-        palette = widget.palette()
-        palette.setColor(colorRole, color)
-        widget.setPalette(palette)
+
+    def execute(self):
+        self.app.exec()
+
+    def edit_values(self):
+        pass
 
     class SpeedModule:
         def __init__(self, gui):
@@ -291,14 +293,16 @@ class DashboardGUI:
 
         def get_module(self):
             return self.current_module
+    
+    def setColor(self, widget, colorRole, color):
+        palette = widget.palette()
+        palette.setColor(colorRole, color)
+        widget.setPalette(palette)
 
 def main():
-    NUM_CELLS = 5
-    app = QApplication(sys.argv)
-    gui = DashboardGUI(NUM_CELLS)
+    gui = DashboardGUI(sys.argv)
     gui.display()
-
-    sys.exit(app.exec())
+    sys.exit(gui.execute())
 
 if __name__ == '__main__':
     main()
