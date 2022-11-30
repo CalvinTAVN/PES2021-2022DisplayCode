@@ -13,24 +13,32 @@ class DashboardGUI:
         self.controller_module = self.ControllerModule(self)
         self.motor_module = self.MotorModule(self)
         self.battery_module = self.BatteryModule(self, numCells)
+        self.current_module = self.CurrentModule(self)
         self.setup_gui()
 
     def setup_gui(self):
         self.window.setWindowTitle('Dashboard GUI')
         
-        self.layout.setRowStretch(0, 10)
+        self.layout.setRowStretch(0, 8)
         self.layout.setRowStretch(1, 2)
+        self.layout.setColumnStretch(0, 4)
+        self.layout.setColumnStretch(1, 4)
+        self.layout.setColumnStretch(2, 4)
 
-        self.layout.addLayout(self.speed_module.get_module(), 0, 0)
-        self.layout.addLayout(self.battery_module.get_module(), 0, 1)
+        self.layout.addLayout(self.speed_module.get_module(), 0, 0, 1, 2)
         self.layout.addLayout(self.controller_module.get_module(), 1, 0)
         self.layout.addLayout(self.motor_module.get_module(), 1, 1)
+        self.layout.addLayout(self.battery_module.get_module(), 0, 2)
+        self.layout.addLayout(self.current_module.get_module(), 1, 2)
 
         self.frame.setLayout(self.layout)
 
-        self.window.setCentralWidget(self.frame) 
+        self.window.setCentralWidget(self.frame)
 
     def display(self):
+        screen_size = QGuiApplication.primaryScreen().availableGeometry()
+        self.window.resize(screen_size.width() // 2, screen_size.height() // 2)
+        self.window.move(screen_size.center() - self.window.frameGeometry().center())
         self.window.show()
     
     def setColor(self, widget, colorRole, color):
@@ -44,13 +52,9 @@ class DashboardGUI:
             self.speed_module = QGridLayout()
             self.mph_value = QLabel()
             self.rpm_value = QLabel()
-            self.knots_value = QLabel()
             self.setup_module()
         
         def setup_module(self):
-            self.speed_module.setRowStretch(0, 8)
-            self.speed_module.setRowStretch(1, 4)
-
             mph_container = QWidget()
             mph_container.setAutoFillBackground(True)
             self.gui.setColor(mph_container, mph_container.backgroundRole(), QColor(0, 0, 0))
@@ -64,7 +68,7 @@ class DashboardGUI:
 
             mph_layout.addWidget(self.mph_value, 1, 0)
 
-            self.speed_module.addWidget(mph_container, 0, 0, 1, 2)
+            self.speed_module.addWidget(mph_container, 0, 0)
 
             rpm_container = QWidget()
             rpm_container.setAutoFillBackground(True)
@@ -78,21 +82,7 @@ class DashboardGUI:
 
             rpm_layout.addWidget(self.rpm_value, 1, 0)
             
-            self.speed_module.addWidget(rpm_container, 1, 0)
-            
-            knots_container = QWidget()
-            knots_container.setAutoFillBackground(True)
-            self.gui.setColor(knots_container, knots_container.backgroundRole(), QColor(0, 0, 0))
-
-            knots_layout = QGridLayout(knots_container)
-            knots_label = QLabel('Knots')
-            knots_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            self.gui.setColor(knots_label, knots_label.foregroundRole(), QColor(255, 255, 255))
-            knots_layout.addWidget(knots_label, 0, 0)
-
-            knots_layout.addWidget(self.knots_value, 1, 0)
-
-            self.speed_module.addWidget(knots_container, 1, 1)
+            self.speed_module.addWidget(rpm_container, 0, 1)
 
         def get_module(self):
             return self.speed_module
@@ -259,6 +249,48 @@ class DashboardGUI:
 
             def get_module(self):
                 return self.cell_module
+        
+    class CurrentModule:
+        def __init__(self, gui):
+            self.gui = gui
+            self.current_module = QGridLayout()
+            self.dc_value = QLabel()
+            self.phase_value = QLabel()
+            self.knots_value = QLabel()
+            self.setup_module()
+        
+        def setup_module(self):
+            dc_container = QWidget()
+            dc_container.setAutoFillBackground(True)
+            self.gui.setColor(dc_container, dc_container.backgroundRole(), QColor(0, 0, 0))
+
+            dc_layout = QGridLayout(dc_container)
+
+            dc_label = QLabel('DC')
+            dc_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(dc_label, dc_label.foregroundRole(), QColor(255, 255, 255))
+            dc_layout.addWidget(dc_label, 0, 0)
+
+            dc_layout.addWidget(self.dc_value, 1, 0)
+
+            self.current_module.addWidget(dc_container, 0, 0)
+
+            phase_container = QWidget()
+            phase_container.setAutoFillBackground(True)
+            self.gui.setColor(phase_container, phase_container.backgroundRole(), QColor(0, 0, 0))
+
+            phase_layout = QGridLayout(phase_container)
+            phase_label = QLabel('Phase Current')
+            phase_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(phase_label, phase_label.foregroundRole(), QColor(255, 255, 255))
+            phase_layout.addWidget(phase_label, 0, 0)
+
+            phase_layout.addWidget(self.phase_value, 1, 0)
+            
+            self.current_module.addWidget(phase_container, 0, 1)
+
+        def get_module(self):
+            return self.current_module
 
 def main():
     NUM_CELLS = 5
