@@ -6,6 +6,7 @@ import sys
 class DashboardGUI:
 
     def __init__(self, args):
+        self.values = {}
         self.app = QApplication(args)
         self.window = QMainWindow()
         self.frame = QFrame()
@@ -45,15 +46,17 @@ class DashboardGUI:
     def execute(self):
         self.app.exec()
 
-    def edit_values(self):
-        pass
+    def edit_values(self, new_values):
+        for key in new_values.keys():
+            if self.values[key]:
+                self.values[key].setText(str(new_values[key]))
 
     class SpeedModule:
         def __init__(self, gui):
             self.gui = gui
             self.speed_module = QGridLayout()
-            self.mph_value = QLabel()
-            self.rpm_value = QLabel()
+            self.gui.values['mph'] = QLabel()
+            self.gui.values['rpm'] = QLabel()
             self.setup_module()
         
         def setup_module(self):
@@ -68,7 +71,9 @@ class DashboardGUI:
             self.gui.setColor(mph_label, mph_label.foregroundRole(), QColor(255, 255, 255))
             mph_layout.addWidget(mph_label, 0, 0)
 
-            mph_layout.addWidget(self.mph_value, 1, 0)
+            self.gui.values['mph'].setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(self.gui.values['mph'], self.gui.values['mph'].foregroundRole(), QColor(255, 255, 255))
+            mph_layout.addWidget(self.gui.values['mph'], 1, 0)
 
             self.speed_module.addWidget(mph_container, 0, 0)
 
@@ -82,7 +87,9 @@ class DashboardGUI:
             self.gui.setColor(rpm_label, rpm_label.foregroundRole(), QColor(255, 255, 255))
             rpm_layout.addWidget(rpm_label, 0, 0)
 
-            rpm_layout.addWidget(self.rpm_value, 1, 0)
+            self.gui.values['rpm'].setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self.gui.setColor(self.gui.values['rpm'], self.gui.values['rpm'].foregroundRole(), QColor(255, 255, 255))
+            rpm_layout.addWidget(self.gui.values['rpm'], 1, 0)
             
             self.speed_module.addWidget(rpm_container, 0, 1)
 
